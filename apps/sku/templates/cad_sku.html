@@ -1,0 +1,15 @@
+{% if messages %}
+    {% for message in messages %}
+        {{message}}
+    {% endfor %}
+{% endif %}
+
+<form method="POST" action="{% url 'cad_sku' %}">
+    {% csrf_token %}
+
+    <input type="number" placeholder="SKU" name="sku">
+    <input type="text" placeholder="MODELO" name="modelo">
+    <hr>
+    <input class="btn btn-success" type="submit" value="CADASTRAR">
+
+</form>

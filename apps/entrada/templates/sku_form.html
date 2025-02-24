@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário SKU</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <h2>Buscar SKU</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="sku_input">SKU:</label>
+        <input type="number" id="sku_input" name="sku" required>
+
+        <label for="modelo_input">Modelo:</label>
+        <input type="text" id="modelo_input" name="modelo" readonly>
+
+        <label for="sufixo_select">Sufixo:</label>
+        <select id="sufixo_select" name="sufixo">
+            <option value="">Selecione um sufixo</option>
+        </select>
+
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            $("#sku_input").on("change", function() {
+                var sku = $(this).val();
+                if (sku) {
+                    $.ajax({
+                        url: "{% url 'get_sku_data' %}",
+                        data: { sku: sku },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.modelo) {
+                                $("#modelo_input").val(data.modelo);
+                                var sufixoSelect = $("#sufixo_select");
+                                sufixoSelect.empty();
+                                sufixoSelect.append('<option value="">Selecione um sufixo</option>');
+                                $.each(data.sufixos, function(index, value) {
+                                    sufixoSelect.append('<option value="' + value + '">' + value + '</option>');
+                                });
+                            }
+                        },
+                        error: function() {
+                            alert("SKU não encontrado.");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
