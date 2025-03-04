@@ -83,6 +83,9 @@ def entrada(request):
             responsavel_entrada=responsavel_entrada,
             defeito=defeito
         )
+        if  produto.defeito == "Venda Direta":
+            produto.defeito_especifico = "Tela Quebrada"
+            
         produto.save()
 
         messages.success(request, 'Produto cadastrado com sucesso.')

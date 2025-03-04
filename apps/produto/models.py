@@ -22,6 +22,13 @@ class Produto(models.Model):
         ('Venda Direta', 'Venda Direta'),
     ]
 
+    DEFEITO_ESPECIFICO = [
+        ('Tela Quebrada', 'Tela Quebrada'),
+        ('Não liga', 'Não liga'),
+        ('Sem Defeito', 'Sem Defeito'),
+        
+    ]
+
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='ENTRADA')
     data_entrada = models.DateTimeField(auto_now_add=True)
     ptn = models.CharField(max_length=15)
@@ -30,6 +37,7 @@ class Produto(models.Model):
     sufixo = models.ForeignKey(Sufixo, on_delete=models.DO_NOTHING, related_name="produto_sufixo")
     modelo = models.ForeignKey(Sku, on_delete=models.DO_NOTHING, related_name="produto_modelo_sku")
     defeito = models.CharField(max_length=30, choices=DEFEITO_CHOICES, null=False, blank=False)
+    defeito_especifico = models.CharField(max_length=30, choices=DEFEITO_ESPECIFICO, default="Sem Defeito")
     responsavel_conserto = models.ForeignKey(
         Funcionario, on_delete=models.SET_NULL, null=True, related_name="responsavel_conserto"
     )

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'apps.funcionario',
     'produto',
     'entrada',
+    'triagem',
 ]
 
 MIDDLEWARE = [
