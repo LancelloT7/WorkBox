@@ -1,9 +1,12 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<title>TRIAGEM</title>
 <form method="POST" action="{% url 'form_triagem' %}">
     {% csrf_token %}
     <p><strong>Status:</strong>{{produto.status}}</p>
     <p><strong>Data de Entrada:</strong> {{produto.data_entrada}}</p>
     <p><strong>Responsavel Entrada:</strong> {{produto.responsavel_entrada.nome}}</p>
-    <input name="ptn" value="{{produto.ptn}} " readonly>
+    <input name="ptn" value="{{produto.ptn}}" readonly>
     <p><strong>Série:</strong> {{produto.serie}}</p>
     <p><strong>SKU:</strong> {{produto.sku.sku}}</p>
     <p><strong>Sufixo:</strong> {{produto.sufixo.sufixo}}</p>

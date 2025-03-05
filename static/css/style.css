@@ -1,0 +1,120 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Fundo escuro */
+body {
+    background-color: #121212;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Estilização do título */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Container principal do formulário */
+form {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Estilização dos labels */
+label {
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Estilização dos campos de entrada */
+input, select {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+/* Botão estilizado */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #3700b3;
+}
+
+/* Tabela de produtos cadastrados */
+table {
+    width: 80%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: #1e1e1e;
+}
+
+table, th, td {
+    border: 1px solid #6200ea;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #3700b3;
+    color: white;
+}
+
+/* Mensagens de feedback */
+.messages {
+    list-style: none;
+    margin: 10px 0;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.messages li {
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.messages .success {
+    background-color: #4caf50;
+    color: white;
+}
+
+.messages .error {
+    background-color: #f44336;
+    color: white;
+}

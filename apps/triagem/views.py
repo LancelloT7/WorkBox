@@ -53,7 +53,9 @@ def form_triagem(request):
         ptn = request.POST.get('ptn').upper()
         produto = get_object_or_404(Produto, ptn=ptn)
         produto.defeito_especifico = request.POST.get('defeito_especifico')
-        produto.status = 'TRIAGEM'  # Corrigido
+        if produto.status == "ENTRADA":
+            produto.status = "TRIAGEM"
+              
         produto.save()
         messages.add_message(request, constants.SUCCESS, 'Triagem Cadastrada')
         return render(request, 'triagem.html')

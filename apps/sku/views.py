@@ -5,57 +5,46 @@ from django.contrib.messages import constants
 
 # Create your views here.
 
-def cad_sku(request):
 
-    if request.method == "GET":
+
+def cad_sku_sufixo(request):
+    sku_instance = None
+    sufixos = []
+    if request.method == 'GET':
+        
         return render(request, 'cad_sku.html')
 
-    elif request.method == "POST":
-
-        sku = request.POST.get('sku')
-        modelo = request.POST.get('modelo')
-
-        if Sku.objects.filter(sku=sku).exists() :
-            
-            messages.add_message(request, constants.ERROR, 'SKU já existe')
-            return redirect('cad_sku')
-        
-        else:
-            novo_sku = Sku.objects.create(sku=sku, modelo=modelo)
-
-        messages.add_message(request, constants.SUCCESS, 'SKU Cadastrado')
-        return redirect('cad_sku')
-
-def cad_sufixo(request):
-
-    if request.method == "GET":
-        return render(request, 'cad_sufixo.html')
-
-    elif request.method == "POST":
-        
-        sku = request.POST.get('sku')
-        sufixo = request.POST.get('sufixo')
+    elif request.method == 'POST':
+        sku_input = request.POST.get('sku').strip()
 
         try:
-            sku_instace = Sku.objects.get(sku=sku)
+            # Verifica se o SKU já existe
+            sku_instance = Sku.objects.get(sku=sku_input)
+            sufixos = sku_instance.sku_sufixo.all()  # Busca os sufixos relacionados ao SKU
 
-            if sku:
+            # Se for enviado um novo sufixo, adiciona ao SKU existente
+            if 'sufixo' in request.POST:
+                sufixo_input = request.POST.get('sufixo').strip()
+                novo_sufixo = Sufixo(sku=sku_instance, sufixo=sufixo_input)
+                novo_sufixo.save()
+                messages.success(request, 'Novo sufixo cadastrado com sucesso!')
+                return redirect('cad_sku_sufixo')
 
-                if Sufixo.objects.filter(sufixo=sufixo).exists():
+        except Sku.DoesNotExist:
+            # Se o SKU não existe, cadastrar um novo SKU com modelo e sufixo inicial
+            modelo_input = request.POST.get('modelo').strip()
+            sufixo_input = request.POST.get('sufixo').strip()
 
-                    messages.add_message(request, constants.ERROR, 'Sufixo já existe')
-                    return redirect('cad_sufixo')
-                else:
-                    sufixo = Sufixo.objects.create(sku=sku_instace, sufixo=sufixo)
+            novo_sku = Sku(sku=sku_input, modelo=modelo_input)
+            novo_sku.save()
 
-                    messages.add_message(request, constants.SUCCESS, 'Cadastrato realizado com sucesso')
-                    return redirect('cad_sufixo')
-        except:
-            messages.add_message(request, constants.ERROR, 'SKU não encontrado no banco de dados')
-            return redirect('cad_sufixo')    
+            novo_sufixo = Sufixo(sku=novo_sku, sufixo=sufixo_input)
+            novo_sufixo.save()
 
+            messages.success(request, 'SKU, modelo e sufixo cadastrados com sucesso!')
+            return render(request, 'cad_sku.html')
 
-
-
-
-           
+    return render(request, 'cad_sku.html', {
+        'sku_instance': sku_instance,
+        'sufixos': sufixos,
+    })
