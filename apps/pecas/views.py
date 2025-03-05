@@ -14,12 +14,13 @@ def verificar_sku(request):
         sku_digitado = request.POST.get('sku')
 
         # Verificar se o SKU existe
-        try:
-            sku_instance = Sku.objects.get(sku=sku_digitado)
-            return redirect('cadastrar_peca', sku=sku_instance.sku)
-        except Sku.DoesNotExist:
-            messages.error(request, "SKU não encontrado.")
-            return redirect('verificar_sku')
+        if sku_digitado is not None:
+            try:
+                sku_instance = Sku.objects.get(sku=sku_digitado)
+                return redirect('cadastrar_peca', sku=sku_instance.sku)
+            except Sku.DoesNotExist:
+                messages.error(request, "SKU não encontrado.")
+                return redirect('verificar_sku')
 
     return render(request, 'verificar_sku.html')
 

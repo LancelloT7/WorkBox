@@ -46,6 +46,7 @@ def entrada(request):
         sufixo_id = request.POST.get('sufixo')
         responsavel_entrada_id = request.POST.get('responsavel_entrada')
         defeito = request.POST.get('defeito')
+        observacao = request.POST.get('observacao')
 
         # Validação do SKU
         try:
@@ -81,7 +82,8 @@ def entrada(request):
             sufixo=sufixo,
             modelo=sku,  # O modelo já está na classe Sku
             responsavel_entrada=responsavel_entrada,
-            defeito=defeito
+            defeito=defeito,
+            observacao=observacao
         )
         if  produto.defeito == "Venda Direta":
             produto.defeito_especifico = "Tela Quebrada"

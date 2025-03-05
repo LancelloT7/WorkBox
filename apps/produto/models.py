@@ -31,6 +31,7 @@ class Produto(models.Model):
 
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='ENTRADA')
     data_entrada = models.DateTimeField(auto_now_add=True)
+    observacao = models.CharField(max_length=100, blank=True)
     ptn = models.CharField(max_length=15)
     serie = models.CharField(max_length=30)
     sku = models.ForeignKey(Sku, on_delete=models.DO_NOTHING, related_name="produto_sku")

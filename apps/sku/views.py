@@ -10,41 +10,56 @@ from django.contrib.messages import constants
 def cad_sku_sufixo(request):
     sku_instance = None
     sufixos = []
+
     if request.method == 'GET':
-        
         return render(request, 'cad_sku.html')
 
     elif request.method == 'POST':
-        sku_input = request.POST.get('sku').strip()
+        # Obtém o SKU informado pelo usuário e remove espaços extras
+        sku_input = request.POST.get('sku', '').strip()
+
+        if not sku_input:
+            messages.error(request, 'O campo SKU é obrigatório!')
+            return render(request, 'cad_sku.html')
 
         try:
-            # Verifica se o SKU já existe
+            # Verifica se o SKU já existe, considerando possíveis variações de maiúsculas/minúsculas
             sku_instance = Sku.objects.get(sku=sku_input)
-            sufixos = sku_instance.sku_sufixo.all()  # Busca os sufixos relacionados ao SKU
 
-            # Se for enviado um novo sufixo, adiciona ao SKU existente
-            if 'sufixo' in request.POST:
-                sufixo_input = request.POST.get('sufixo').strip()
+            # Se o SKU for encontrado, busca os sufixos relacionados a ele
+            sufixos = sku_instance.sku_sufixo.all()
+
+            # Verifica se foi enviado um novo sufixo para adicionar ao SKU
+            sufixo_input = request.POST.get('sufixo', '').strip()
+            if sufixo_input:
                 novo_sufixo = Sufixo(sku=sku_instance, sufixo=sufixo_input)
                 novo_sufixo.save()
                 messages.success(request, 'Novo sufixo cadastrado com sucesso!')
-                return redirect('cad_sku_sufixo')
+                return redirect('cad_sku_sufixo')  # Redireciona para evitar duplicação do formulário
+            else:
+                messages.error(request, 'O campo Sufixo é obrigatório!')
 
         except Sku.DoesNotExist:
             # Se o SKU não existe, cadastrar um novo SKU com modelo e sufixo inicial
-            modelo_input = request.POST.get('modelo').strip()
-            sufixo_input = request.POST.get('sufixo').strip()
+            modelo_input = request.POST.get('modelo', '').strip()
+            sufixo_input = request.POST.get('sufixo', '').strip()
 
-            novo_sku = Sku(sku=sku_input, modelo=modelo_input)
-            novo_sku.save()
+            if sku_input and modelo_input and sufixo_input:
+                # Cria o novo SKU
+                novo_sku = Sku(sku=sku_input, modelo=modelo_input)
+                novo_sku.save()
 
-            novo_sufixo = Sufixo(sku=novo_sku, sufixo=sufixo_input)
-            novo_sufixo.save()
+                # Cria o sufixo relacionado ao novo SKU
+                novo_sufixo = Sufixo(sku=novo_sku, sufixo=sufixo_input)
+                novo_sufixo.save()
 
-            messages.success(request, 'SKU, modelo e sufixo cadastrados com sucesso!')
-            return render(request, 'cad_sku.html')
+                messages.success(request, 'SKU, modelo e sufixo cadastrados com sucesso!')
+                return redirect('cad_sku_sufixo')  # Redireciona após o cadastro para evitar duplicação
 
-    return render(request, 'cad_sku.html', {
-        'sku_instance': sku_instance,
-        'sufixos': sufixos,
-    })
+            else:
+                messages.error(request, 'Todos os campos (SKU, modelo e sufixo) são obrigatórios para cadastrar um novo SKU.')
+
+        return render(request, 'cad_sku.html', {
+            'sku_instance': sku_instance,
+            'sufixos': sufixos,
+        })

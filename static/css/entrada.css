@@ -1,0 +1,54 @@
+form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+form label {
+    width: 100%;
+}
+
+form input, form select {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+}
+
+form .form-group {
+    width: 48%;  /* Ajusta a largura dos campos para ficarem lado a lado */
+    display: inline-block;
+}
+
+form .full-width {
+    width: 100%;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table th {
+    background-color: #f2f2f2;
+}

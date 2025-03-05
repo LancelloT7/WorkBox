@@ -37,6 +37,7 @@ def buscar(request):
             'sufixo': produto.sufixo.id if produto.sufixo else 'N/A',
             'modelo': produto.modelo.id if produto.modelo else 'N/A',
             'defeito': produto.tipo_defeito,
+            'observacao': produto.observacao,
             'responsavel_conserto': produto.responsavel_conserto.nome if produto.responsavel_conserto else 'Não atribuído',
             'responsavel_embalagem': produto.responsavel_embalagem.nome if produto.responsavel_embalagem else 'Não atribuído',
             'responsavel_entrada': produto.responsavel_entrada.nome if produto.responsavel_entrada else 'Não atribuído',

@@ -46,6 +46,7 @@
                     <option value="{{ chave }}">{{ valor }}</option>
                 {% endfor %}
             </select>
+        <input type text name="observacao">    
         <button type="submit">Cadastrar Produto</button>
     </form>
 
@@ -62,7 +63,8 @@
                 <th>Sufixo</th>
                 <th>Responsável</th>
                 <th>Data de Entrada</th>
-                <th>Tipo de Defeito</th> <!-- Nova coluna -->
+                <th>Tipo de Defeito</th>
+                <th>Observação</th> <!-- Nova coluna -->
             </tr>
         </thead>
         <tbody>
@@ -78,6 +80,7 @@
                     <td>{{ produto.data_entrada|date:"d/m/Y" }}</td>
                     <!-- Exibe o valor do defeito -->
                     <td>{{ produto.get_defeito_display }}</td>
+                    <td>{{ produto.observacao }}</td>
                       
                  
                     
