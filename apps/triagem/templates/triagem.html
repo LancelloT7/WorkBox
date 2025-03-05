@@ -3,6 +3,7 @@
         {{message}}
     {% endfor %}
 {% endif %}
+<title>TRIAGEM</title>
 
 <form method="POST" action="{% url 'cad_triagem' %}">
     {% csrf_token %}

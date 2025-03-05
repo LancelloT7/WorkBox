@@ -1,0 +1,22 @@
+{% if messages %}
+    {% for message in messages %}
+        {{message}}
+    {% endfor %}
+{% endif %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Verificar SKU</title>
+</head>
+<body>
+    <h1>Verificar SKU</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="sku">Digite o SKU:</label>
+        <input type="text" name="sku" id="sku" required>
+        <button type="submit">Verificar</button>
+    </form>
+</body>
+</html>
+

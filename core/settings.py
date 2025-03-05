@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'produto',
     'entrada',
     'triagem',
+    'pecas',
 ]
 
 MIDDLEWARE = [
