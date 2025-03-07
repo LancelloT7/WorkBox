@@ -1,0 +1,131 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Fundo escuro */
+body {
+    background-color: #121212;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Container principal */
+.container {
+    width: 90%;
+    max-width: 600px;
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+/* Título */
+h2 {
+    margin-bottom: 20px;
+}
+
+/* Formulário de busca */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    background-color: #242424;
+    color: #ffffff;
+}
+
+/* Botão de busca */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #3700b3;
+}
+
+/* Detalhes do produto */
+.produto-info {
+    margin-top: 20px;
+    text-align: left;
+}
+
+/* Container de peças associadas */
+.pecas-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Card de peça */
+.peca-card {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    padding: 15px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.peca-card:hover {
+    transform: scale(1.05);
+}
+
+/* Nome da peça */
+.peca-card h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+/* Informações da peça */
+.peca-card p {
+    font-size: 14px;
+    color: #cccccc;
+}
+form button {
+    background-color: #e74c3c; /* Cor de fundo vermelha */
+    color: #ffffff; /* Texto branco */
+    border: none; /* Remove a borda padrão */
+    padding: 5px 10px; /* Espaçamento interno */
+    font-size: 14px; /* Tamanho da fonte */
+    cursor: pointer; /* Cursor em forma de mãozinha */
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: background-color 0.3s ease; /* Transição suave para a cor de fundo */
+}
+
+form button:hover {
+    background-color: #c0392b; /* Cor de fundo mais escura ao passar o mouse */
+}

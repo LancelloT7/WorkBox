@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from pecas.models import Peca
 from sku.models import Sku, Sufixo
 from django.contrib import messages
 from django.contrib.messages import constants
 from django.http import JsonResponse, HttpResponse
+from produto.models import Produto
 
 
 # Create your views here.
@@ -37,6 +38,7 @@ def cadastrar_pecas(request, sku):
         
         descricao = request.POST.get('descricao')
         observacao = request.POST.get('observacao')
+        posicao = request.POST.get('posicao')
 
         # Verifica se o sufixo pertence ao SKU
         try:
@@ -53,6 +55,7 @@ def cadastrar_pecas(request, sku):
                 sufixo=sufixo_instance,
                 part_number=part_number,
                 descricao=descricao,
+                posicao=posicao,
                 observacao=observacao
             )
             peca.save() 
@@ -67,3 +70,33 @@ def cadastrar_pecas(request, sku):
         'sku': sku_instance.sku,
         'sufixos': sufixos,
     })
+
+
+def buscar_produto(request):
+    if request.method == "GET":
+        return render(request, "buscar_produto.html")
+
+    elif request.method == "POST":
+        procura = request.POST.get("procura", "").strip()
+        if procura:
+            produto = Produto.objects.filter(ptn__icontains=procura).first()
+            if produto:
+                pecas = Peca.objects.filter(sufixo=produto.sufixo)  # Filtra peças compatíveis pelo sufixo
+                return render(request, "buscar_produto.html", {"produto": produto, "pecas": pecas})
+
+        return render(request, "buscar_produto.html", {"erro": "Produto não encontrado!"})
+
+def adicionar_pecas(request, produto_id):
+    produto = get_object_or_404(Produto, id=produto_id)
+
+    if request.method == "POST":
+        if Produto.objects.filter(id=produto.id).exists():
+            produto.peca.clear()
+    
+        pecas_selecionadas = request.POST.getlist("pecas")  # Lista de IDs das peças selecionadas
+        pecas = Peca.objects.filter(id__in=pecas_selecionadas)
+        produto.peca.add(*pecas)  # Adiciona as peças ao produto
+        return redirect("buscar_produto")  # Redireciona para a busca após salvar
+
+    return redirect("buscar_produto")
+

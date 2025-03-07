@@ -14,6 +14,7 @@ class Peca(models.Model):
     sufixo = models.ForeignKey(Sufixo, on_delete=models.CASCADE, related_name="pecas")
     part_number = models.CharField(max_length=15, null=False, blank=False)
     status = models.CharField(max_length=30, choices=STATUS_PECAS, default="VERIFICAR DISPONIBILIDADE")
+    posicao =  models.CharField(max_length=15, null=False, blank=False)
     descricao = models.CharField(max_length=100, null=False, blank=False)  
     observacao = models.TextField(blank=True, null=True)  
 

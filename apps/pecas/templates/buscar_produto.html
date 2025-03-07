@@ -1,0 +1,33 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<h2>Buscar Produto</h2>
+
+<!-- Formulário de Busca -->
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="procura" placeholder="Digite o PTN do produto">
+    <button type="submit">Buscar</button>
+</form>
+
+{% if erro %}
+    <p style="color: red;">{{ erro }}</p>
+{% endif %}
+
+<!-- Se encontrar o produto, exibe as informações e as peças -->
+{% if produto %}
+    <h2>Produto Encontrado</h2>
+    <p><strong>PTN:</strong> {{ produto.ptn }}</p>
+    <p><strong>Modelo:</strong> {{ produto.modelo }}</p>
+    <p><strong>Sufixo:</strong> {{ produto.sufixo }}</p>
+
+    <h3>Adicionar Peças</h3>
+    <form method="POST" action="{% url 'adicionar_pecas' produto.id %}">
+        {% csrf_token %}
+        {% for peca in pecas %}
+            <input type="checkbox" name="pecas" value="{{ peca.id }}"> {{ peca.descricao }} <br>
+        {% empty %}
+            <p>Nenhuma peça disponível para este sufixo.</p>
+        {% endfor %}
+        <button type="submit">Salvar Peças</button>
+    </form>
+{% endif %}

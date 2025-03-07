@@ -1,0 +1,33 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<h2>Produto Encontrado</h2>
+<p><strong>PTN:</strong> {{ produto.ptn }}</p>
+<p><strong>Modelo:</strong> {{ produto.modelo }}</p>
+<p><strong>Sufixo:</strong> {{ produto.sufixo }}</p>
+
+<!-- Formulário para adicionar peças ao produto -->
+<form method="POST" action="{% url 'adicionar_pecas' produto.id %}">
+    {% csrf_token %}
+    <button type="submit">Selecionar Peças</button>
+</form>
+
+<h3>Peças Associadas</h3>
+{% if produto.pecas.all %}
+    <ul>
+        {% for peca in produto.pecas.all %}
+            <li>
+                {{ peca.descricao }}
+                <!-- Formulário para remover a peça -->
+                <form method="POST" action="{% url 'remover_peca' produto.id peca.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" onclick="return confirm('Tem certeza que deseja remover esta peça?')">Remover</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Não há peças associadas a este produto.</p>
+{% endif %}
+
+<a href="{% url 'buscar_produto' %}">Nova busca</a>
+
