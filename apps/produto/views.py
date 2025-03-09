@@ -22,6 +22,7 @@ def consulta_total(request):
             messages.add_message(request, constants.ERROR, 'Produto não encontrado')
             return redirect('consulta_total')
         
+        
 def home(request):
     
     return render(request, 'home.html')        

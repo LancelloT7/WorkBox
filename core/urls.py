@@ -26,6 +26,7 @@ urlpatterns = [
     path('entrada/', include('entrada.urls')),
     path('triagem/', include('triagem.urls')),
     path('pecas/', include('pecas.urls')),
+    path('autenticacao/', include('autenticacao.urls')),
     path('', views.home),
     
 

@@ -39,13 +39,15 @@ def cadastrar_pecas(request, sku):
         descricao = request.POST.get('descricao')
         observacao = request.POST.get('observacao')
         posicao = request.POST.get('posicao')
-
+        defeito_pecas = request.POST.get('defeito_pecas')
         # Verifica se o sufixo pertence ao SKU
         try:
             sufixo_instance = Sufixo.objects.get(sufixo=sufixo, sku=sku_instance)
         except Sufixo.DoesNotExist:
             messages.error(request, 'Sufixo não encontrado para o SKU.')
             return redirect('cadastrar_pecas', sku=sku_instance.sku)
+        
+        
 
         if Peca.objects.filter(part_number=part_number).exists():
             messages.add_message(request, constants.ERROR, 'Já existe uma peça com esse part number')  
@@ -56,7 +58,8 @@ def cadastrar_pecas(request, sku):
                 part_number=part_number,
                 descricao=descricao,
                 posicao=posicao,
-                observacao=observacao
+                observacao=observacao,
+                defeito_pecas=defeito_pecas
             )
             peca.save() 
 
@@ -86,17 +89,37 @@ def buscar_produto(request):
 
         return render(request, "buscar_produto.html", {"erro": "Produto não encontrado!"})
 
+
 def adicionar_pecas(request, produto_id):
     produto = get_object_or_404(Produto, id=produto_id)
 
     if request.method == "POST":
-        if Produto.objects.filter(id=produto.id).exists():
-            produto.peca.clear()
-    
-        pecas_selecionadas = request.POST.getlist("pecas")  # Lista de IDs das peças selecionadas
+        # Atualiza o status do produto
+        produto.status = "VERIFICAR DISPONIBILIDADE"
+        produto.save()
+
+        # Obtém as peças selecionadas no formulário
+        pecas_selecionadas = request.POST.getlist("pecas")
         pecas = Peca.objects.filter(id__in=pecas_selecionadas)
-        produto.peca.add(*pecas)  # Adiciona as peças ao produto
+
+        # Remove as peças que não estão mais selecionadas
+        produto.peca.remove(*produto.peca.exclude(id__in=pecas_selecionadas))
+        
+        # Adiciona as novas peças ao produto
+        produto.peca.add(*pecas)
+
+        # Atualiza o defeito de cada peça
+        for peca in pecas:
+            defeito = request.POST.get(f"defeito_pecas_{peca.id}")
+            if defeito:
+                peca.defeito_pecas = defeito  # Atualiza o defeito da peça
+                peca.save()  # Salva a peça com o novo defeito
+
+        # Atualiza o status do produto se não houver peças associadas
+        if not produto.peca.exists():
+            produto.status = "LIBERADO PARA CONSERTO"
+        produto.save()
+
         return redirect("buscar_produto")  # Redireciona para a busca após salvar
 
     return redirect("buscar_produto")
-

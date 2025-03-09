@@ -37,6 +37,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'autenticacao',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,11 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps',
     'sku',
-    'apps.funcionario',
+    'funcionario',
     'produto',
     'entrada',
     'triagem',
     'pecas',
+    
 ]
 
 MIDDLEWARE = [
@@ -143,3 +145,5 @@ MESSAGE_TAGS = {
     constants.ERROR: 'alert-error',
 
 }
+
+

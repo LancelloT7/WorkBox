@@ -32,6 +32,7 @@
                         <p><strong>Part Number:</strong> {{ peca.part_number }}</p>
                         <p><strong>Posição:</strong> {{ peca.posicao }}</p>
                         <p><strong>Status:</strong> {{ peca.status }}</p>
+                        <p><strong>Defeito:</strong> {% if peca.defeito_pecas and peca.defeito_pecas != 'ND' %}{{ peca.defeito_pecas }}{% else %}Não informado{% endif %}</p>
                     </div>
                 {% endfor %}
             </div>

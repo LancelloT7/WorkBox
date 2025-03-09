@@ -1,33 +1,74 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-<h2>Buscar Produto</h2>
 
-<!-- Formulário de Busca -->
-<form method="POST">
-    {% csrf_token %}
-    <input type="text" name="procura" placeholder="Digite o PTN do produto">
-    <button type="submit">Buscar</button>
-</form>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Produto</title>
+    <link rel="stylesheet" href="{% static 'css/add_pecas.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Buscar Produto</h2>
 
-{% if erro %}
-    <p style="color: red;">{{ erro }}</p>
-{% endif %}
+        <!-- Formulário de Busca -->
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="procura" placeholder="Digite o PTN do produto">
+            <button type="submit">Buscar</button>
+        </form>
 
-<!-- Se encontrar o produto, exibe as informações e as peças -->
-{% if produto %}
-    <h2>Produto Encontrado</h2>
-    <p><strong>PTN:</strong> {{ produto.ptn }}</p>
-    <p><strong>Modelo:</strong> {{ produto.modelo }}</p>
-    <p><strong>Sufixo:</strong> {{ produto.sufixo }}</p>
+        {% if erro %}
+            <p class="erro">{{ erro }}</p>
+        {% endif %}
 
-    <h3>Adicionar Peças</h3>
-    <form method="POST" action="{% url 'adicionar_pecas' produto.id %}">
-        {% csrf_token %}
-        {% for peca in pecas %}
-            <input type="checkbox" name="pecas" value="{{ peca.id }}"> {{ peca.descricao }} <br>
-        {% empty %}
-            <p>Nenhuma peça disponível para este sufixo.</p>
-        {% endfor %}
-        <button type="submit">Salvar Peças</button>
-    </form>
-{% endif %}
+        <!-- Se encontrar o produto, exibe as informações e as peças -->
+        {% if produto %}
+            <div class="produto-info">
+                <h2>Produto Encontrado</h2>
+                <p><strong>PTN:</strong> {{ produto.ptn }}</p>
+                <p><strong>Série:</strong> {{ produto.serie }}</p>
+                <p><strong>Modelo:</strong> {{ produto.modelo }}</p>
+                <p><strong>SKU:</strong> {{ produto.sku.sku }}</p>
+                <p><strong>Sufixo:</strong> {{ produto.sufixo.sufixo }}</p>
+            </div>
+
+            <h3>Adicionar Peças</h3>
+            <form method="POST" action="{% url 'adicionar_pecas' produto.id %}">
+                {% csrf_token %}
+                <div class="pecas-container">
+                    {% for peca in pecas %}
+                        <div class="peca-card">
+                            <input type="checkbox" name="pecas" value="{{ peca.id }}">
+                            <span class="descricao">
+                                <p>{{ peca.descricao }}</p>
+                                <p>{{ peca.posicao }}</p>
+                                <p>{{ peca.part_number }}</p>
+                            </span>
+                
+                            <!-- Exibe o defeito associado à peça -->
+                            <p><strong>Defeito:</strong> 
+                                {% if peca.defeito_pecas and peca.defeito_pecas != 'ND' %}
+                                    {{ peca.defeito_pecas }}
+                                {% else %}
+                                    Não informado
+                                {% endif %}
+                            </p>
+                
+                            <!-- Select de defeitos -->
+                            <select name="defeito_pecas_{{ peca.id }}">
+                                {% for defeito, label in peca.DEFEITO_PECAS %}
+                                    <option value="{{ defeito }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% empty %}
+                        <p class="sem-pecas">Nenhuma peça disponível para este sufixo.</p>
+                    {% endfor %}
+                </div>
+            {% endif %}   
+                <input type="submit" valu="SALVAR">
+            </form>
+</body>
+</html>
