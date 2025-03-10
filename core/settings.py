@@ -146,4 +146,4 @@ MESSAGE_TAGS = {
 
 }
 
-
+AUTH_USER_MODEL = 'autenticacao.Usuario'

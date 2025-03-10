@@ -10,14 +10,13 @@
     <link rel="stylesheet"
         href="https://fonts.google.com/share?selection.family=Open+Sans:ital,wght@0,300..800;1,300..800">
 </head>
-        <div >
-                    {% if messages %}
-                        {% for message in messages %}
-                            {{message}}
-                        {% endfor %}
-                    {% endif %}
-        </div>                      
+                          
 <body>
+    {% if messages %}
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+    {% endif %}
     <div class="container">
         <div class="content first-content">
             <div class="first-column">
@@ -25,6 +24,11 @@
                 <p class="description description-primary">Para se manter conectado conosco</p>
                 <p class="description description-primary">Por favor faça login com sua conta pessoal</p>
                 <button id="signin" class="btn btn-primary">sign in</button>
+                {% if messages %}
+                    {% for message in messages %}
+                        {{message}}
+                    {% endfor %}
+                {% endif %}
             </div>
 
             <div class="second-column">
@@ -48,7 +52,7 @@
 
                     <label class="label-input" for="">
                         <i class="fa-solid fa-user  icon-modify"></i>
-                        <input type="text" placeholder="Nome" name="login">
+                        <input type="text" placeholder="Nome" name="nome">
                     </label>
 
                     <label class="label-input" for="">
@@ -61,6 +65,11 @@
                         <input type="password" placeholder="Confirmar Senha" name="confirmar_senha">
                     </label>
                     <button class="btn btn-second">CADASTRAR</button>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {{message}}
+                        {% endfor %}
+                    {% endif %}
                 </form>
             </div>
         </div>  
@@ -98,7 +107,7 @@
                     
                     <label class="label-input" for="">
                         <i class="fa-solid fa-user  icon-modify"></i>
-                        <input type="text" placeholder="Nome" name="login">
+                        <input type="text" placeholder="Nome" name="nome">
                     </label>
 
                     <label class="label-input" for="">
