@@ -17,12 +17,17 @@ def consulta_total(request):
             produto = Produto.objects.get(ptn=ptn)
             pecas = produto.peca.all()  # Obtendo todas as peças relacionadas ao produto
 
+            # Adiciona os rótulos dos campos de escolha
+            for peca in pecas:
+                peca.defeito_pecas_display = peca.get_defeito_pecas_display()
+                peca.tipo_peca_display = peca.get_tipo_peca_display()
+
             return render(request, 'consulta_total.html', {'produto': produto, 'pecas': pecas})
         except Produto.DoesNotExist:
             messages.add_message(request, constants.ERROR, 'Produto não encontrado')
             return redirect('consulta_total')
+
         
-        
-def home(request):
     
+def home(request):
     return render(request, 'home.html')        

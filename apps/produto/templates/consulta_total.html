@@ -15,6 +15,7 @@
     {% if produto %}
         <h3>Detalhes do Produto</h3>
         <div class="produto-info">
+            <p><strong>Responsável Entrada:</strong> {{ produto.responsavel_entrada.nome }}</p>
             <p><strong>PTN:</strong> {{ produto.ptn }}</p>
             <p><strong>Série:</strong> {{ produto.serie }}</p>
             <p><strong>Status:</strong> {{ produto.status }}</p>
@@ -22,17 +23,20 @@
             <p><strong>Modelo:</strong> {{ produto.sku.modelo }}</p>
             <p><strong>Sufixo:</strong> {{ produto.sufixo.sufixo }}</p>
         </div>
-
+ 
         <h3>Peças Associadas</h3>
         {% if pecas %}
             <div class="pecas-container">
                 {% for peca in pecas %}
+                    
                     <div class="peca-card">
+                        <h1>{{ peca.tipo_peca_display }}</h1>
                         <h4>{{ peca.descricao }}</h4>
                         <p><strong>Part Number:</strong> {{ peca.part_number }}</p>
                         <p><strong>Posição:</strong> {{ peca.posicao }}</p>
                         <p><strong>Status:</strong> {{ peca.status }}</p>
-                        <p><strong>Defeito:</strong> {% if peca.defeito_pecas and peca.defeito_pecas != 'ND' %}{{ peca.defeito_pecas }}{% else %}Não informado{% endif %}</p>
+                        <p><strong>Status:</strong> {{ peca.numero_pedido }}</p>                        
+                        <p><strong>Defeito:</strong> {{ peca.defeito_pecas_display }}</p>
                     </div>
                 {% endfor %}
             </div>

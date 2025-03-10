@@ -46,20 +46,36 @@
                                 <p>{{ peca.posicao }}</p>
                                 <p>{{ peca.part_number }}</p>
                             </span>
-                
-                            <!-- Exibe o defeito associado à peça -->
-                            <p><strong>Defeito:</strong> 
-                                {% if peca.defeito_pecas and peca.defeito_pecas != 'ND' %}
-                                    {{ peca.defeito_pecas }}
+
+                            <!-- Exibe o tipo de peça associado -->
+                            <p><strong>Tipo de Peça:</strong> 
+                                {% if peca.tipo_peca %}
+                                    {{ peca.get_tipo_peca_display }}
                                 {% else %}
                                     Não informado
                                 {% endif %}
                             </p>
-                
+
+                            <!-- Select de tipos de peça -->
+                            <select name="tipo_peca_{{ peca.id }}">
+                                {% for tipo, label in peca.TIPO_PECA %}
+                                    <option value="{{ tipo }}" {% if peca.tipo_peca == tipo %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+
+                            <!-- Exibe o defeito associado à peça -->
+                            <p><strong>Defeito:</strong> 
+                                {% if peca.defeito_pecas and peca.defeito_pecas != 'ND' %}
+                                    {{ peca.get_defeito_pecas_display }}
+                                {% else %}
+                                    Não informado
+                                {% endif %}
+                            </p>
+
                             <!-- Select de defeitos -->
                             <select name="defeito_pecas_{{ peca.id }}">
                                 {% for defeito, label in peca.DEFEITO_PECAS %}
-                                    <option value="{{ defeito }}">{{ label }}</option>
+                                    <option value="{{ defeito }}" {% if peca.defeito_pecas == defeito %}selected{% endif %}>{{ label }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -67,8 +83,9 @@
                         <p class="sem-pecas">Nenhuma peça disponível para este sufixo.</p>
                     {% endfor %}
                 </div>
-            {% endif %}   
-                <input type="submit" valu="SALVAR">
+                <input type="submit" value="SALVAR">
             </form>
+        {% endif %}
+    </div>
 </body>
 </html>

@@ -107,19 +107,20 @@ def adicionar_pecas(request, produto_id):
         
         # Adiciona as novas peças ao produto
         produto.peca.add(*pecas)
-
-        # Atualiza o defeito de cada peça
+        
+        # Atualiza o tipo e o defeito de cada peça
         for peca in pecas:
+            tipo = request.POST.get(f"tipo_peca_{peca.id}")
             defeito = request.POST.get(f"defeito_pecas_{peca.id}")
-            if defeito:
-                peca.defeito_pecas = defeito  # Atualiza o defeito da peça
-                peca.save()  # Salva a peça com o novo defeito
-
+            if tipo and defeito:
+                peca.tipo_peca = tipo
+                peca.defeito_pecas = defeito
+                peca.save()  # Salva a peça com as novas informações
         # Atualiza o status do produto se não houver peças associadas
         if not produto.peca.exists():
             produto.status = "LIBERADO PARA CONSERTO"
         produto.save()
 
         return redirect("buscar_produto")  # Redireciona para a busca após salvar
-
+    
     return redirect("buscar_produto")
