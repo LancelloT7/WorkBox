@@ -4,10 +4,10 @@ from pecas.models import Peca
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.messages import constants
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
+@login_required(login_url='logar')
 def consulta_pedido(request):
     if request.method == "GET":
         return render(request, 'consulta_pedido.html')

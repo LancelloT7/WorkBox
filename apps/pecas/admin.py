@@ -4,4 +4,4 @@ from .models import Peca
 # Register your models here.
 @admin.register(Peca)
 class PecaAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('descricao',)

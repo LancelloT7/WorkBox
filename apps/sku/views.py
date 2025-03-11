@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from .models import Sku, Sufixo
 from django.contrib import messages
 from django.contrib.messages import constants
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
+@login_required(login_url='logar')
 def cad_sku_sufixo(request):
     sku_instance = None
     sufixos = []

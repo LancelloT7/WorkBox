@@ -9,6 +9,7 @@ from django.contrib.auth.hashers import check_password
 # Create your views here.
 def logar(request):
     if request.method =="GET":
+        logout(request)
         return render(request, 'login_cadastro.html')
     elif request.method == "POST":
         username = request.POST.get('nome')

@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.messages import constants
 from django.contrib.auth.decorators import login_required
 
-@login_required(login_url='home')
+@login_required(login_url='logar')
 def cad_triagem(request):
     if hasattr(request.user, 'nivel_de_acesso') and request.user.nivel_de_acesso == 3:
         if request.method == "GET":
@@ -22,7 +22,7 @@ def cad_triagem(request):
     messages.add_message(request, constants.ERROR, 'Você não tem acesso a esta área')
     return render(request, 'home.html')
    
-@login_required(login_url='home')
+@login_required(login_url='logar')
 def buscar(request):
     ptn = request.GET.get('ptn', None).upper()
     if ptn:
@@ -48,7 +48,7 @@ def buscar(request):
 
     return JsonResponse({'erro': 'Código não informado'}, status=400)
 
-
+@login_required(login_url='logar')
 def form_triagem(request):
     if request.method == "POST":
         ptn = request.POST.get('ptn').upper()

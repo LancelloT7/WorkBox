@@ -5,11 +5,10 @@ from django.contrib import messages
 from django.contrib.messages import constants
 from django.http import JsonResponse, HttpResponse
 from produto.models import Produto
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
-
+@login_required(login_url='logar')
 def verificar_sku(request):
     if request.method == 'POST':
         sku_digitado = request.POST.get('sku')
@@ -26,6 +25,7 @@ def verificar_sku(request):
     return render(request, 'verificar_sku.html')
 
 # Página 2: Formulário para Cadastrar a Peça
+@login_required(login_url='logar')
 def cadastrar_pecas(request, sku):
     try:
         sku_instance = Sku.objects.get(sku=sku)
@@ -74,7 +74,7 @@ def cadastrar_pecas(request, sku):
         'sufixos': sufixos,
     })
 
-
+@login_required(login_url='logar')
 def buscar_produto(request):
     if request.method == "GET":
         return render(request, "buscar_produto.html")
@@ -89,7 +89,7 @@ def buscar_produto(request):
 
         return render(request, "buscar_produto.html", {"erro": "Produto não encontrado!"})
 
-
+@login_required(login_url='logar')
 def adicionar_pecas(request, produto_id):
     produto = get_object_or_404(Produto, id=produto_id)
 

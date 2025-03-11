@@ -66,6 +66,6 @@ class Produto(models.Model):
     
    
     def __str__(self):
-        return self.status, self.data_entrada, self.ptn, self.serie, self.sku, self.sufixo, self.modelo, self.responsavel_conserto, self.responsavel_embalagem, self.responsavel_entrada, self.responsavel_triagem, self.responsavel_saida, self.defeito
+        return f"{self.status} | {self.data_entrada} | {self.ptn} | {self.serie} | {self.sku} | {self.sufixo} | {self.modelo} | {self.responsavel_conserto} | {self.responsavel_embalagem} | {self.responsavel_entrada} | {self.responsavel_triagem} | {self.responsavel_saida} | {self.defeito}"
 
 

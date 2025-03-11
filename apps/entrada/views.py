@@ -7,9 +7,10 @@ from sku.models import Sku, Sufixo
 from funcionario.models import Funcionario
 from django.http import JsonResponse
 from datetime import datetime
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required(login_url='logar')
 def sku_form_view(request):
     return render(request, "sku_form.html")
 
@@ -28,7 +29,7 @@ def get_sku_data(request):
     except Produto.DoesNotExist:
         return JsonResponse({"error": "SKU não encontrado"}, status=404)
 
-
+@login_required(login_url='logar')
 def entrada(request):
     all_funcionarios = Funcionario.objects.all()
     all_produtos  = Produto.objects.all()
@@ -99,10 +100,10 @@ def entrada(request):
             produto.save()
         except:
             messages.add_message(request, constants.ERROR, 'Não foi possivel cadastrar o produto.')  
-                  
+
     messages.success(request, 'Produto cadastrado com sucesso.')
     return redirect('entrada')
-
+@login_required(login_url='logar')
 def get_sku_data(request):
     """ Retorna os dados do SKU para preenchimento automático """
     sku_value = request.GET.get("sku", None)
