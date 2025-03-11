@@ -373,3 +373,37 @@ z-index: 11;
         width: 40%;
     }
 }
+
+.messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 300px;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+}
+
+.alert-success {
+    background-color: #28a745;
+}
+
+.alert-error {
+    background-color: #dc3545;
+}
+
+.alert-warning {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.alert-info {
+    background-color: #17a2b8;
+}

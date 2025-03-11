@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from apps.produto import views
+from apps.autenticacao import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,7 +27,8 @@ urlpatterns = [
     path('triagem/', include('triagem.urls')),
     path('pecas/', include('pecas.urls')),
     path('autenticacao/', include('autenticacao.urls')),
-    path('', views.home),
+    path('pedido/', include('pedido.urls')),
+    path('', views.logar),
     
 
 

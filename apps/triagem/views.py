@@ -3,26 +3,26 @@ from produto.models import Produto
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.messages import constants
+from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url='home')
 def cad_triagem(request):
-    if request.method == "GET":
-        return render(request, 'triagem.html')
-    
-    if request.method == "POST":
-        try:
-            ptn = request.POST.get('ptn').upper()
-            produto = Produto.objects.get(ptn=ptn)  
-            return render(request, 'form_triagem.html', {'produto': produto, 'defeito_especifico_choices': Produto.DEFEITO_ESPECIFICO})
-        except Produto.DoesNotExist:
-            messages.add_message(request, constants.ERROR, 'Produto não encontrado')
+    if hasattr(request.user, 'nivel_de_acesso') and request.user.nivel_de_acesso == 3:
+        if request.method == "GET":
             return render(request, 'triagem.html')
-
-
-
-    
-    
-
+        
+        if request.method == "POST":
+            try:
+                ptn = request.POST.get('ptn').upper()
+                produto = Produto.objects.get(ptn=ptn)  
+                return render(request, 'form_triagem.html', {'produto': produto, 'defeito_especifico_choices': Produto.DEFEITO_ESPECIFICO})
+            except Produto.DoesNotExist:
+                messages.add_message(request, constants.ERROR, 'Produto não encontrado')
+                return render(request, 'triagem.html')
+    messages.add_message(request, constants.ERROR, 'Você não tem acesso a esta área')
+    return render(request, 'home.html')
+   
+@login_required(login_url='home')
 def buscar(request):
     ptn = request.GET.get('ptn', None).upper()
     if ptn:

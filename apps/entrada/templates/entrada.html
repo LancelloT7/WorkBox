@@ -12,6 +12,11 @@
 <body>
     
     <h2>Cadastro de Produto</h2>
+    {% if messages %}
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+    {% endif %} 
     
     <form method="POST">
         {% csrf_token %}

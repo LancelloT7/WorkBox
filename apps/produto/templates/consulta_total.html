@@ -34,9 +34,12 @@
                         <h4>{{ peca.descricao }}</h4>
                         <p><strong>Part Number:</strong> {{ peca.part_number }}</p>
                         <p><strong>Posição:</strong> {{ peca.posicao }}</p>
-                        <p><strong>Status:</strong> {{ peca.status }}</p>
-                        <p><strong>Status:</strong> {{ peca.numero_pedido }}</p>                        
+                        <p><strong>Status:</strong> {{ peca.status }}</p>                       
                         <p><strong>Defeito:</strong> {{ peca.defeito_pecas_display }}</p>
+                        {% if peca.numero_pedido %}
+                            <p><strong>Numero Pedido:</strong> {{ peca.numero_pedido }}</p>
+                        {% endif %}
+                         
                     </div>
                 {% endfor %}
             </div>

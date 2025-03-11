@@ -58,11 +58,19 @@ def entrada(request):
         # Verifica se o Produto já existe
         contador = 0
         novo_ptn = ptn  # Começa com o PTN original
-
+        
+        if Produto.objects.filter(ptn=ptn).exists():
+            produto = Produto.objects.get(ptn=ptn)
+            if produto.serie !=serie:
+                messages.success(request, 'Produto tem uma provavel etiqueta duplicada favor verificar.')
+                return redirect('entrada')
+        
+            
         while Produto.objects.filter(ptn=novo_ptn, serie=serie).exists():
+                
             contador += 1  # Incrementa para a próxima verificação
             novo_ptn = f"{ptn}-{contador}"  # Adiciona o contador ao PTN
-            
+                
 
         ptn = novo_ptn  # Atualiza o PTN final antes de salvar
         # Obtém os objetos do banco
@@ -74,7 +82,7 @@ def entrada(request):
             messages.add_message(request, constants.ERROR, 'Funcionário inválido.')
             return redirect('entrada')
 
-        # Criação do Produto
+            # Criação do Produto
         produto = Produto(
             ptn=ptn,
             serie=serie,
@@ -87,11 +95,13 @@ def entrada(request):
         )
         if  produto.defeito == "Venda Direta":
             produto.defeito_especifico = "Tela Quebrada"
-            
-        produto.save()
-
-        messages.success(request, 'Produto cadastrado com sucesso.')
-        return redirect('entrada')
+        try:
+            produto.save()
+        except:
+            messages.add_message(request, constants.ERROR, 'Não foi possivel cadastrar o produto.')  
+                  
+    messages.success(request, 'Produto cadastrado com sucesso.')
+    return redirect('entrada')
 
 def get_sku_data(request):
     """ Retorna os dados do SKU para preenchimento automático """

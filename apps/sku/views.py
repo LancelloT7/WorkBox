@@ -5,8 +5,6 @@ from django.contrib.messages import constants
 
 # Create your views here.
 
-
-
 def cad_sku_sufixo(request):
     sku_instance = None
     sufixos = []
@@ -41,8 +39,8 @@ def cad_sku_sufixo(request):
 
         except Sku.DoesNotExist:
             # Se o SKU não existe, cadastrar um novo SKU com modelo e sufixo inicial
-            modelo_input = request.POST.get('modelo', '').strip()
-            sufixo_input = request.POST.get('sufixo', '').strip()
+            modelo_input = request.POST.get('modelo', '').strip().upper()
+            sufixo_input = request.POST.get('sufixo', '').strip().upper()
 
             if sku_input and modelo_input and sufixo_input:
                 # Cria o novo SKU

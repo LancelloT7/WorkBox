@@ -1,16 +1,25 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Principal</title>
+    
+    <!-- Importando o CSS -->
     <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
 <body>
     <div class="container">
         <h1>Bem-vindo ao Sistema de Gestão</h1>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <p class="message">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
         <div class="menu">
             <div class="menu-item">
                 <a href="{% url 'entrada' %}">
@@ -44,14 +53,26 @@
             </div>
             <div class="menu-item">
                 <a href="{% url 'cad_funcionario' %}">
-                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Cadastro de Peças">
+                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Cadastro de Funcionário">
                     <p>Cadastro de Funcionário</p>
                 </a>
             </div>
             <div class="menu-item">
                 <a href="{% url 'consulta_total' %}">
-                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Cadastro de Peças">
+                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Consulta Total">
                     <p>Consulta Total</p>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{% url 'consulta_pedido' %}">
+                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Pedidos">
+                    <p>Pedidos</p>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{% url 'sair' %}">
+                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Sair">
+                    <p>SAIR</p>
                 </a>
             </div>
         </div>

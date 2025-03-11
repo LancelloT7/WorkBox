@@ -36,7 +36,7 @@ def cadastrar_pecas(request, sku):
         sufixo = request.POST.get('sufixo')
         part_number = request.POST.get('part_number').upper()
         
-        descricao = request.POST.get('descricao')
+        descricao = request.POST.get('descricao').upper()
         observacao = request.POST.get('observacao')
         posicao = request.POST.get('posicao')
         defeito_pecas = request.POST.get('defeito_pecas')
