@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from pecas.models import Peca
+from pecas.models import Peca, ProdutoPeca
 from sku.models import Sku, Sufixo
 from django.contrib import messages
 from django.contrib.messages import constants
@@ -8,7 +8,7 @@ from produto.models import Produto
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-@login_required(login_url='logar')
+
 def verificar_sku(request):
     if request.method == 'POST':
         sku_digitado = request.POST.get('sku')
@@ -25,7 +25,8 @@ def verificar_sku(request):
     return render(request, 'verificar_sku.html')
 
 # Página 2: Formulário para Cadastrar a Peça
-@login_required(login_url='logar')
+
+
 def cadastrar_pecas(request, sku):
     try:
         sku_instance = Sku.objects.get(sku=sku)
@@ -46,8 +47,7 @@ def cadastrar_pecas(request, sku):
         except Sufixo.DoesNotExist:
             messages.error(request, 'Sufixo não encontrado para o SKU.')
             return redirect('cadastrar_pecas', sku=sku_instance.sku)
-        
-        
+
 
         if Peca.objects.filter(part_number=part_number).exists():
             messages.add_message(request, constants.ERROR, 'Já existe uma peça com esse part number')  
@@ -74,7 +74,6 @@ def cadastrar_pecas(request, sku):
         'sufixos': sufixos,
     })
 
-@login_required(login_url='logar')
 def buscar_produto(request):
     if request.method == "GET":
         return render(request, "buscar_produto.html")
@@ -84,43 +83,75 @@ def buscar_produto(request):
         if procura:
             produto = Produto.objects.filter(ptn__icontains=procura).first()
             if produto:
-                pecas = Peca.objects.filter(sufixo=produto.sufixo)  # Filtra peças compatíveis pelo sufixo
-                return render(request, "buscar_produto.html", {"produto": produto, "pecas": pecas})
+                # Obtendo todas as peças associadas ao produto
+                produto_pecas = ProdutoPeca.objects.filter(produto=produto)
+
+                # Recuperando as peças relacionadas e associando as informações de tipo e defeito
+                pecas = []
+                for produto_peca in produto_pecas:
+                    peca = produto_peca.peca
+                    peca.tipo_peca = produto_peca.tipo_peca
+                    peca.defeito_pecas = produto_peca.defeito_pecas
+                    pecas.append(peca)
+
+                # Extrai as escolhas de tipo de peça e defeito
+                tipo_peca_choices = Peca.TIPO_PECA
+                defeito_pecas_choices = Peca.DEFEITO_PECAS
+
+                return render(request, "buscar_produto.html", {
+                    "produto": produto,
+                    "pecas": pecas,
+                    "tipo_peca_choices": tipo_peca_choices,
+                    "defeito_pecas_choices": defeito_pecas_choices,
+                })
 
         return render(request, "buscar_produto.html", {"erro": "Produto não encontrado!"})
 
-@login_required(login_url='logar')
-def adicionar_pecas(request, produto_id):
-    produto = get_object_or_404(Produto, id=produto_id)
+def adicionar_pecas(request, produto_id=None):
+    erro = None
+    produto = None
+    pecas = Peca.objects.all()  # Você pode filtrar as peças conforme necessário
 
-    if request.method == "POST":
-        # Atualiza o status do produto
-        produto.status = "VERIFICAR DISPONIBILIDADE"
-        produto.save()
+    if request.method == 'POST':
 
-        # Obtém as peças selecionadas no formulário
-        pecas_selecionadas = request.POST.getlist("pecas")
-        pecas = Peca.objects.filter(id__in=pecas_selecionadas)
-
-        # Remove as peças que não estão mais selecionadas
-        produto.peca.remove(*produto.peca.exclude(id__in=pecas_selecionadas))
+        # Verificando se estamos buscando um produto pelo PTN
+        if 'procura' in request.POST:
+            ptn = request.POST['procura']
+            try:
+                produto = Produto.objects.get(ptn=ptn)
+                
+            except Produto.DoesNotExist:
+                erro = "Produto não encontrado. Verifique o PTN."
         
-        # Adiciona as novas peças ao produto
-        produto.peca.add(*pecas)
-        
-        # Atualiza o tipo e o defeito de cada peça
-        for peca in pecas:
-            tipo = request.POST.get(f"tipo_peca_{peca.id}")
-            defeito = request.POST.get(f"defeito_pecas_{peca.id}")
-            if tipo and defeito:
-                peca.tipo_peca = tipo
-                peca.defeito_pecas = defeito
-                peca.save()  # Salva a peça com as novas informações
-        # Atualiza o status do produto se não houver peças associadas
-        if not produto.peca.exists():
-            produto.status = "LIBERADO PARA CONSERTO"
-        produto.save()
+        # Verificando se estamos associando peças a um produto
+        elif 'pecas' in request.POST and produto_id:
+            
+            produto = get_object_or_404(Produto, id=produto_id)
+            pecas_selecionadas = request.POST.getlist('pecas')  # Obtendo as peças selecionadas
 
-        return redirect("buscar_produto")  # Redireciona para a busca após salvar
+            for peca_id in pecas_selecionadas:
+                peca = get_object_or_404(Peca, id=peca_id)  # Obtenha a peça com base no ID
+                tipo_peca = request.POST.get(f'tipo_peca_{peca_id}')  # Obtendo tipo da peça
+                defeito_peca = request.POST.get(f'defeito_pecas_{peca_id}')  # Obtendo defeito da peça
+
+                # Criando a associação ProdutoPeca
+                ProdutoPeca.objects.create(
+                    produto=produto,
+                    peca=peca,
+                    status=peca.status,  # Usando o status da peça
+                    tipo_peca=tipo_peca,  # Adicionando o tipo de peça
+                    defeito_peca=defeito_peca,  # Adicionando o defeito da peça
+                )                
+                # Mensagem de sucesso
+                messages.success(request, "Peça adicionada ao produto com sucesso!")
+            # Redirecionando para a página de adicionar peças com o produto já associado
+            return redirect('adicionar_pecas', produto_id=produto.id)
+
+    return render(request, 'buscar_produto.html', {
+        'produto': produto,
+        'erro': erro,
+        'pecas': pecas,
+    })
+
     
-    return redirect("buscar_produto")
+    

@@ -6,8 +6,8 @@ from django.contrib import messages
 from django.contrib.messages import constants
 from django.contrib.auth.decorators import login_required
 
-# Create your views here.
-@login_required(login_url='logar')
+# Create your views here
+
 def consulta_pedido(request):
     if request.method == "GET":
         return render(request, 'consulta_pedido.html')
@@ -32,8 +32,7 @@ def consulta_pedido(request):
         
 def salvar_codigos_pedido(request, produto_id):
     produto = get_object_or_404(Produto, id=produto_id)
-    pecas = produto.peca.all()
-    
+    pecas = produto.peca.all()    
     status_atualizado = False  # Flag para verificar se alguma peça foi alterada
 
     for peca in pecas:

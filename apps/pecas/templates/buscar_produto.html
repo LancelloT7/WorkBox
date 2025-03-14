@@ -5,17 +5,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adicionar Peça</title>
+    <title>Adicionar Peças</title>
+    {% if messages %}
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+    {% endif %}
+
     <link rel="stylesheet" href="{% static 'css/add_pecas.css' %}">
 </head>
 <body>
     <div class="container">
-        <title>Adicionar Peças</title>
-
+        <h1>Adicionar Peças ao Produto</h1>
+        
         <!-- Formulário de Busca -->
-        <form method="POST">
+        <form method="POST" class="form-busca">
             {% csrf_token %}
-            <input type="text" name="procura" placeholder="Digite o PTN do produto">
+            <input type="text" name="procura" placeholder="Digite o PTN do produto" required>
             <button type="submit">Buscar</button>
         </form>
 
@@ -23,67 +29,52 @@
             <p class="erro">{{ erro }}</p>
         {% endif %}
 
-        <!-- Se encontrar o produto, exibe as informações e as peças -->
+        <!-- Exibe informações do produto se encontrado -->
         {% if produto %}
             <div class="produto-info">
                 <h2>Produto Encontrado</h2>
-                <p><strong>PTN:</strong> {{ produto.ptn }}</p>
-                <p><strong>Série:</strong> {{ produto.serie }}</p>
-                <p><strong>Modelo:</strong> {{ produto.modelo }}</p>
-                <p><strong>SKU:</strong> {{ produto.sku.sku }}</p>
-                <p><strong>Sufixo:</strong> {{ produto.sufixo.sufixo }}</p>
+                <ul>
+                    <li><strong>PTN:</strong> {{ produto.ptn }}</li>
+                    <li><strong>Série:</strong> {{ produto.serie }}</li>
+                    <li><strong>Modelo:</strong> {{ produto.modelo }}</li>
+                    <li><strong>SKU:</strong> {{ produto.sku.sku }}</li>
+                    <li><strong>Sufixo:</strong> {{ produto.sufixo.sufixo }}</li>
+                </ul>
             </div>
 
-            <h3>Adicionar Peças</h3>
+            <h3>Selecionar Peças</h3>
             <form method="POST" action="{% url 'adicionar_pecas' produto.id %}">
                 {% csrf_token %}
                 <div class="pecas-container">
                     {% for peca in pecas %}
                         <div class="peca-card">
-                            <input type="checkbox" name="pecas" value="{{ peca.id }}">
-                            <span class="descricao">
-                                <p>{{ peca.descricao }}</p>
-                                <p>{{ peca.posicao }}</p>
-                                <p>{{ peca.part_number }}</p>
-                            </span>
+                            <label>
+                                <input type="checkbox" name="pecas" value="{{ peca.id }}">
+                                <span class="descricao">
+                                    <strong>{{ peca.descricao }}</strong> - {{ peca.posicao }} - {{ peca.part_number }}
+                                </span>
+                            </label>   
+                            <label>Tipo de Peça:
+                                <select name="tipo_peca_{{ peca.id }}">
+                                    {% for tipo, label in peca.TIPO_PECA %}
+                                        <option value="{{ tipo }}" {% if peca.tipo_peca == tipo %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
 
-                            <!-- Exibe o tipo de peça associado -->
-                            <p><strong>Tipo de Peça:</strong> 
-                                {% if peca.tipo_peca %}
-                                    {{ peca.get_tipo_peca_display }}
-                                {% else %}
-                                    Não informado
-                                {% endif %}
-                            </p>
-
-                            <!-- Select de tipos de peça -->
-                            <select name="tipo_peca_{{ peca.id }}">
-                                {% for tipo, label in peca.TIPO_PECA %}
-                                    <option value="{{ tipo }}" {% if peca.tipo_peca == tipo %}selected{% endif %}>{{ label }}</option>
-                                {% endfor %}
-                            </select>
-
-                            <!-- Exibe o defeito associado à peça -->
-                            <p><strong>Defeito:</strong> 
-                                {% if peca.defeito_pecas and peca.defeito_pecas != 'ND' %}
-                                    {{ peca.get_defeito_pecas_display }}
-                                {% else %}
-                                    Não informado
-                                {% endif %}
-                            </p>
-
-                            <!-- Select de defeitos -->
-                            <select name="defeito_pecas_{{ peca.id }}">
-                                {% for defeito, label in peca.DEFEITO_PECAS %}
-                                    <option value="{{ defeito }}" {% if peca.defeito_pecas == defeito %}selected{% endif %}>{{ label }}</option>
-                                {% endfor %}
-                            </select>
+                            <label>Defeito:
+                                <select name="defeito_pecas_{{ peca.id }}">
+                                    {% for defeito, label in peca.DEFEITO_PECAS %}
+                                        <option value="{{ defeito }}" {% if peca.defeito_pecas == defeito %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
                         </div>
                     {% empty %}
                         <p class="sem-pecas">Nenhuma peça disponível para este sufixo.</p>
                     {% endfor %}
                 </div>
-                <input type="submit" value="SALVAR">
+                <button type="submit">Salvar</button>
             </form>
         {% endif %}
     </div>

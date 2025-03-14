@@ -1,7 +1,8 @@
 from django.db import models
 from funcionario.models import Funcionario
 from sku.models import Sku,Sufixo
-from pecas.models import Peca
+
+
 # Create your models here.
 
 class Produto(models.Model):
@@ -38,9 +39,9 @@ class Produto(models.Model):
     sku = models.ForeignKey(Sku, on_delete=models.DO_NOTHING, related_name="produto_sku")
     sufixo = models.ForeignKey(Sufixo, on_delete=models.DO_NOTHING, related_name="produto_sufixo")
     modelo = models.ForeignKey(Sku, on_delete=models.DO_NOTHING, related_name="produto_modelo_sku")
-    peca = models.ManyToManyField(Peca, related_name="produto_pecas")
     defeito = models.CharField(max_length=30, choices=DEFEITO_CHOICES, null=False, blank=False)
     defeito_especifico = models.CharField(max_length=30, choices=DEFEITO_ESPECIFICO, default="Sem Defeito")
+    pecas = models.ManyToManyField('pecas.Peca', through='pecas.ProdutoPeca')
     responsavel_conserto = models.ForeignKey(
         Funcionario, on_delete=models.SET_NULL, null=True, related_name="responsavel_conserto"
     )
