@@ -43,6 +43,7 @@
             </div>
 
             <h3>Selecionar Peças</h3>
+                
             <form method="POST" action="{% url 'adicionar_pecas' produto.id %}">
                 {% csrf_token %}
                 <div class="pecas-container">

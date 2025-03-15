@@ -75,27 +75,33 @@ def buscar_produto(request):
         return render(request, "buscar_produto.html")
 
     elif request.method == "POST":
-        procura = request.POST.get("procura", "").strip()
+        procura = request.POST.get("procura", "").strip().upper()
+
         if procura:
             produto = Produto.objects.filter(ptn__icontains=procura).first()
             if produto:
-                # Buscando todas as peças disponíveis
-                pecas = Peca.objects.all()
+                pecas = Peca.objects.filter(sku=produto.sku, sufixo=produto.sufixo)
+                
+                if pecas.exists():
+                   
+                    tipo_peca_choices = Peca.TIPO_PECA
+                    defeito_pecas_choices = Peca.DEFEITO_PECAS
 
-                # Extrai os choices de tipo de peça e defeito diretamente da classe Peca
-                tipo_peca_choices = Peca.TIPO_PECA
-                defeito_pecas_choices = Peca.DEFEITO_PECAS
+                    return render(request, "buscar_produto.html", {
+                        "produto": produto,
+                        "pecas": pecas,
+                        "tipo_peca_choices": tipo_peca_choices,
+                        "defeito_pecas_choices": defeito_pecas_choices,
+                    })
+                else:
+                    return render(request, "buscar_produto.html", {"erro": "Nenhuma peça encontrada para este produto!"})
 
-                return render(request, "buscar_produto.html", {
-                    "produto": produto,
-                    "pecas": pecas,
-                    "tipo_peca_choices": tipo_peca_choices,
-                    "defeito_pecas_choices": defeito_pecas_choices,
-                })
+            else:
+                return render(request, "buscar_produto.html", {"erro": "Produto não encontrado!"})
 
-        return render(request, "buscar_produto.html", {"erro": "Produto não encontrado!"})
+        else:
+            return render(request, "buscar_produto.html", {"erro": "Por favor, insira um PTN válido para a pesquisa."})
 
-        return render(request, "buscar_produto.html", {"erro": "Produto não encontrado!"})
 
 def adicionar_pecas(request, produto_id=None):
     erro = None
