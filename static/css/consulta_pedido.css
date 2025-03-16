@@ -97,21 +97,32 @@ button:hover {
     border-radius: 10px;
     padding: 20px;
     width: 300px; /* Aumentei a largura do card */
-    text-align: center;
+    text-align: left; /* Alterei para alinhar o texto à esquerda */
     box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
     transition: transform 0.3s ease-in-out;
     margin: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaço entre os elementos dentro do card */
 }
 
+/* Hover effect para o card */
 .peca-card:hover {
     transform: scale(1.05);
 }
 
 /* Nome da peça */
-.peca-card h4 {
-    font-size: 18px; /* Aumentei o tamanho da fonte do título */
-    margin-bottom: 10px;
+.peca-card h1 {
+    font-size: 20px; /* Tamanho de fonte aumentado para o título */
     color: #ffffff;
+    margin-bottom: 10px;
+}
+
+/* Descrição da peça */
+.peca-card h4 {
+    font-size: 16px; /* Aumentei o tamanho da fonte do título */
+    color: #ffffff;
+    margin-bottom: 10px;
 }
 
 /* Informações da peça */

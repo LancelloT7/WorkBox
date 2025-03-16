@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <a href="{% url 'home' %}">MENU</a>
+    
+    <title>Adicionar Peças</title>
+    {% if messages %}
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+    {% endif %}
+
+    <link rel="stylesheet" href="{% static 'css/add_pecas.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Adicionar Peças ao Produto</h1>
+        
+        <!-- Formulário de Busca -->
+        <form method="POST" class="form-busca">
+            {% csrf_token %}
+            <input type="text" name="procura" placeholder="Digite o PTN do produto" required>
+            <button type="submit">Buscar</button>
+        </form>
+
+        {% if erro %}
+            <p class="erro">{{ erro }}</p>
+        {% endif %}
+
+        <!-- Exibe informações do produto se encontrado -->
+        {% if produto %}
+            <div class="produto-info">
+                <h2>Produto Encontrado</h2>
+                <ul>
+                    <li><strong>PTN:</strong> {{ produto.ptn }}</li>
+                    <li><strong>Série:</strong> {{ produto.serie }}</li>
+                    <li><strong>Modelo:</strong> {{ produto.modelo }}</li>
+                    <li><strong>SKU:</strong> {{ produto.sku.sku }}</li>
+                    <li><strong>Sufixo:</strong> {{ produto.sufixo.sufixo }}</li>
+                </ul>
+            </div>
+
+            <h3>Selecionar Peças</h3>
+                
+            <form method="POST" action="{% url 'adicionar_pecas' produto.id %}">
+                {% csrf_token %}
+                <div class="pecas-container">
+                    {% for peca in pecas %}
+                        <div class="peca-card">
+                            <label>
+                                <input type="checkbox" name="pecas" value="{{ peca.id }}">
+                                <span class="descricao">
+                                    <strong>{{ peca.descricao }}</strong> - {{ peca.posicao }} - {{ peca.part_number }}
+                                </span>
+                            </label>   
+                            <label>Tipo de Peça:
+                                <select name="tipo_peca_{{ peca.id }}">
+                                    {% for tipo, label in peca.TIPO_PECA %}
+                                        <option value="{{ tipo }}" {% if peca.tipo_peca == tipo %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+
+                            <label>Defeito:
+                                <select name="defeito_pecas_{{ peca.id }}">
+                                    {% for defeito, label in peca.DEFEITO_PECAS %}
+                                        <option value="{{ defeito }}" {% if peca.defeito_pecas == defeito %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        </div>
+                    {% empty %}
+                        <p class="sem-pecas">Nenhuma peça disponível para este sufixo.</p>
+                    {% endfor %}
+                </div>
+                <button type="submit">Salvar</button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>

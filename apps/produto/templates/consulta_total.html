@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta Total</title>
+    <link rel="stylesheet" href="{% static 'css/consulta.css' %}">
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'home' %}">MENU</a>
+        <h2>Buscar Produto</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="ptn">Digite o PTN do Produto:</label>
+                <input type="text" id="ptn" name="ptn" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+
+        {% if produto %}
+            <h3>Detalhes do Produto</h3>
+            <div class="produto-info">
+                <p><strong>Responsável Entrada:</strong> {{ produto.responsavel_entrada.nome }}</p>
+                <p><strong>Data Entrada:</strong> {{ produto.data_entrada }}</p>
+                <p><strong>PTN:</strong> {{ produto.ptn }}</p>
+                <p><strong>Série:</strong> {{ produto.serie }}</p>
+                <p><strong>Status:</strong> {{ produto.status }}</p>
+                <p><strong>SKU:</strong> {{ produto.sku.sku }}</p>
+                <p><strong>Modelo:</strong> {{ produto.modelo.modelo }}</p>
+                <p><strong>Sufixo:</strong> {{ produto.sufixo.sufixo }}</p>
+                <p><strong>Defeito:</strong> {{ produto.defeito_especifico }}</p>
+            </div>
+
+            <h3>Peças Associadas</h3>
+            {% if pecas %}
+                <div class="pecas-container">
+                    {% for item in pecas %}
+                        
+                        {% if item.tipo_peca_display == "Garantia" %}
+                            <h1>GARANTIA</h1>
+                            <div class="peca-card">
+                                <h1>{{ item.tipo_peca_display }}</h1> <!-- Tipo de Peça -->
+                                <h4>{{ item.peca.descricao }}</h4> <!-- Descrição da Peça -->
+                                <p><strong>Part Number:</strong> {{ item.peca.part_number }}</p> <!-- Part Number da Peça -->
+                                <p><strong>Posição:</strong> {{ item.peca.posicao }}</p> <!-- Posição da Peça -->
+                                <p><strong>Status:</strong> {{ item.status }}</p> <!-- Status da Peça -->
+                                <p><strong>Defeito:</strong> {{ item.defeito_peca_display }}</p> <!-- Defeito da Peça -->
+                                <p><strong>Tipo de Peça:</strong> {{ item.tipo_peca_display }}</p> <!-- Tipo de Peça -->
+                                
+                                    {% if item.numero_pedido %}
+                                        <p><strong>Número do Pedido:</strong> 
+                                        {{ item.numero_pedido }}
+                                    {% endif %}
+                            <hr>
+                        {% else %}
+                                         
+                            <h1>Orçamento</h1>
+                            <div class="peca-card">
+                                <h1>{{ item.tipo_peca_display }}</h1> <!-- Tipo de Peça -->
+                                <h4>{{ item.peca.descricao }}</h4> <!-- Descrição da Peça -->
+                                <p><strong>Part Number:</strong> {{ item.peca.part_number }}</p> <!-- Part Number da Peça -->
+                                <p><strong>Posição:</strong> {{ item.peca.posicao }}</p> <!-- Posição da Peça -->
+                                <p><strong>Status:</strong> {{ item.status }}</p> <!-- Status da Peça -->
+                                <p><strong>Defeito:</strong> {{ item.defeito_peca_display }}</p> <!-- Defeito da Peça -->
+                                <p><strong>Tipo de Peça:</strong> {{ item.tipo_peca_display }}</p> <!-- Tipo de Peça -->
+                                
+                                    {% if item.numero_pedido %}
+                                        <p><strong>Número do Pedido:</strong> 
+                                        {{ item.numero_pedido }}
+                                    {% endif %} 
+                            <hr>        
+                        {% endif %}    
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Nenhuma peça associada.</p>
+            {% endif %}
+        {% else %}
+            {% if messages %}
+                <div class="alert alert-danger">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>

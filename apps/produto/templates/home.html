@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Menu Principal{% endblock %}
+
+{% block extra_css %}
+    
+{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <div class="container">
+        <h1>Bem-vindo ao Sistema de Gestão</h1>
+
+        
+        <div class="menu">
+            <div class="menu-item">
+                <a href="{% url 'entrada' %}">
+                    <img src="{% static 'imagens/entrada.png' %}" alt="Entrada">
+                    <p>Entrada</p>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{% url 'cad_triagem' %}">
+                    <img src="{% static 'imagens/triagem.png' %}" alt="Triagem">
+                    <p>Triagem</p>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{% url 'buscar_produto' %}">
+                    <img src="{% static 'imagens/pecas.png' %}" alt="Peças">
+                    <p>Peças</p>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{% url 'cad_sku_sufixo' %}">
+                    <img src="{% static 'imagens/cadastro_sku.png' %}" alt="Cadastro de SKU">
+                    <p>Cadastro de SKU</p>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{% url 'verificar_sku' %}">
+                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Cadastro de Peças">
+                    <p>Cadastro de Peças</p>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{% url 'cad_funcionario' %}">
+                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Cadastro de Funcionário">
+                    <p>Cadastro de Funcionário</p>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{% url 'consulta_total' %}">
+                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Consulta Total">
+                    <p>Consulta Total</p>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{% url 'consulta_pedido' %}">
+                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Pedidos">
+                    <p>Pedidos</p>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{% url 'consulta_serie' %}">
+                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Sair">
+                    <p>Consulta por S/N</p>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{% url 'sair' %}">
+                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Sair">
+                    <p>SAIR</p>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+    <link rel="stylesheet"
+        href="https://fonts.google.com/share?selection.family=Open+Sans:ital,wght@0,300..800;1,300..800">
+</head>
+                          
+<body>
+    {% if messages %}
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+    {% endif %}
+    <div class="container">
+        <div class="content first-content">
+            <div class="first-column">
+                <h2 class="title title-primary">Bem vindo!</h2>
+                <p class="description description-primary">Para se manter conectado conosco</p>
+                <p class="description description-primary">Por favor faça login com sua conta pessoal</p>
+                <button id="signin" class="btn btn-primary">sign in</button>
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="second-column">
+                <h2 class="title title-second">Crie sua conta</h2>
+                <div class="social-media">
+                    <ul class="list-social-media">
+                        <a href="" class="link-social-midia">
+                            <li class="item-social-media"><i class="fa-brands fa-facebook"></i></li>
+                        </a>
+                        <a href="" class="link-social-midia">
+                            <li class="item-social-media"><i class="fa-brands fa-google"></i></li>
+                        </a>
+                        <a href="" class="link-social-midia">
+                            <li class="item-social-media"><i class="fa-brands fa-linkedin"></i></li>
+                        </a>
+                    </ul>
+                </div>
+                <p class="description description-second">ou use seu email para se registrar:</p>
+                <form class="form" method="POST" action="{% url 'cadastro' %}">{% csrf_token %}
+                    
+
+                    <label class="label-input" for="">
+                        <i class="fa-solid fa-user  icon-modify"></i>
+                        <input type="text" placeholder="Nome" name="nome">
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="fa-solid fa-lock  icon-modify"></i>
+                        <input type="password" placeholder="Senha" name="senha">
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="fa-solid fa-lock  icon-modify"></i>
+                        <input type="password" placeholder="Confirmar Senha" name="confirmar_senha">
+                    </label>
+                    <button class="btn btn-second">CADASTRAR</button>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {{message}}
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            </div>
+        </div>  
+
+
+
+        <!-- segundo conteudo -->
+
+
+
+        <div class="content second-content">
+            <div class="first-column">
+                <h2 class="title title-primary">Ola amigo!</h2>
+                <p class="description description-primary"> Entre com sua conta pessoal</p>
+                <p class="description description-primary">comece sua jornada conosco</p>
+                <button id="signup" class="btn btn-primary">Sign up</button>
+            </div>
+            <div class="second-column">
+                <h2 class="title title-second">sign in to developer</h2>
+                <div class="social-media">
+                    <ul class="list-social-media">
+                        <a href="" class="link-social-midia">
+                            <li class="item-social-media"><i class="fa-brands fa-facebook"></i></li>
+                        </a>
+                        <a href="" class="link-social-midia">
+                            <li class="item-social-media"><i class="fa-brands fa-google"></i></li>
+                        </a>
+                        <a href="" class="link-social-midia">
+                            <li class="item-social-media"><i class="fa-brands fa-linkedin"></i></li>
+                        </a>
+                    </ul>
+                </div>
+                <p class="description description-second">ou use seu email para se registrar:</p>
+                <form class="form" action="{% url 'logar' %}" method="POST" >{% csrf_token %}
+                    
+                    <label class="label-input" for="">
+                        <i class="fa-solid fa-user  icon-modify"></i>
+                        <input type="text" placeholder="Nome" name="nome">
+                    </label>
+
+                    <label class="label-input" for="">
+                        <i class="fa-solid fa-lock  icon-modify"></i>
+                        <input type="password" placeholder="Senha" name="senha">
+                    </label>
+
+                    <a class="password" href="#">Esqueceu a senha?</a>
+                    <button class="btn btn-second">LOGAR</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://kit.fontawesome.com/d034395ff0.js" crossorigin="anonymous"></script>
+<script src="{% static 'js/app.js' %}"></script>
+
+</html>

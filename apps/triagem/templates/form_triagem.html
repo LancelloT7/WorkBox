@@ -1,0 +1,26 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<a href="{% url 'home' %}">MENU</a>
+<title>TRIAGEM</title>
+<form method="POST" action="{% url 'form_triagem' %}">
+    {% csrf_token %}
+    <p><strong>Status:</strong>{{produto.status}}</p>
+    <p><strong>Data de Entrada:</strong> {{produto.data_entrada}}</p>
+    <p><strong>Responsavel Entrada:</strong> {{produto.responsavel_entrada.nome}}</p>
+    <input name="ptn" value="{{produto.ptn}}" readonly>
+    <p><strong>Série:</strong> {{produto.serie}}</p>
+    <p><strong>SKU:</strong> {{produto.sku.sku}}</p>
+    <p><strong>Sufixo:</strong> {{produto.sufixo.sufixo}}</p>
+    <p><strong>Modelo:</strong> {{produto.sku.modelo}}</p>
+    <p><strong>Defeito:</strong> {{produto.defeito}}</p>
+    <p><strong>Observacao:</strong> {{produto.observacao}}</p>
+
+    <select name="defeito_especifico" required>
+        <option value="">Selecione um defeito</option>
+        {% for chave, valor in defeito_especifico_choices %}
+            <option value="{{ chave }}">{{ valor }}</option>
+        {% endfor %}
+    </select>
+    <hr>
+    <input type="submit" value="CADASTRAR">
+</form>

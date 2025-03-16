@@ -1,0 +1,50 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% if messages %}
+    {% for message in messages %}
+        {{message}}
+    {% endfor %}
+{% endif %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <a href="{% url 'home' %}">MENU</a>
+    <title>Cadastrar Peça</title>
+</head>
+<body>
+    <h1>Cadastrar Peça para SKU: {{ sku }}</h1>
+
+    {% for peca in pecas%}
+        {{peca.descricao}}
+    {% endfor %}        
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="sufixo">Sufixo:</label>
+        <select name="sufixo" id="sufixo" required>
+            <option value="">Selecione um sufixo</option>
+            {% for sufixo in sufixos %}
+                <option value="{{ sufixo.sufixo }}">{{ sufixo.sufixo }}</option>
+            {% endfor %}
+        </select><br><br>
+        <label for="posicao">Posição:</label>
+        <input type="text" name="posicao" id="posicao" required><br><br>
+
+        <label for="part_number">Part Number:</label>
+        <input type="text" name="part_number" id="part_number" required><br><br>
+
+        
+
+        <label for="descricao">Descrição:</label>
+        <input type="text" name="descricao" id="descricao" required><br><br>
+
+        <label for="observacao">Observação:</label>
+        <input type="text" name="observacao" id="observacao"><br><br>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+</body>
+</html>

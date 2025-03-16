@@ -1,54 +1,138 @@
-form {
+/* Reset de margens e paddings */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1a1a1a; /* Fundo escuro para evitar bordas brancas */
+}
+
+/* Estilos específicos para a página de entrada */
+.entrada-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    gap: 40px; /* Espaçamento entre o formulário e a lista */
+    width: 100%; /* Ocupa toda a largura da página */
+    height: 100vh; /* Ocupa toda a altura da página */
+    padding: 20px;
+    background-color: #1a1a1a; /* Fundo preto mais claro */
+    color: #ffffff; /* Texto branco */
+    box-sizing: border-box; /* Garante que o padding não aumente o tamanho total */
 }
 
-form label {
-    width: 100%;
+/* Card que armazena os inputs */
+.entrada-card {
+    background-color: #333; /* Fundo escuro para o card */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra */
+    padding: 20px; /* Espaçamento interno */
+    width: 100%; /* Largura do card */
+    max-width: 400px; /* Largura máxima do card */
 }
 
-form input, form select {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0;
+/* Estilos específicos para o formulário */
+.entrada-form {
+    flex: 1; /* Ocupa o espaço disponível */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os campos horizontalmente */
+    justify-content: center; /* Centraliza o card verticalmente */
+    gap: 15px; /* Espaçamento entre os campos */
+    padding: 20px; /* Padding interno */
+    margin-left: 20px; /* Afasta o formulário da sidebar */
 }
 
-form .form-group {
-    width: 48%;  /* Ajusta a largura dos campos para ficarem lado a lado */
-    display: inline-block;
-}
-
-form .full-width {
-    width: 100%;
-}
-
-button {
-    width: 100%;
+/* Estilos específicos para os campos de input */
+.entrada-form input,
+.entrada-form select,
+.entrada-form button {
+    width: 100%; /* Largura total do card */
     padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
+    border: 1px solid #444; /* Borda escura */
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #444; /* Fundo escuro para campos de entrada */
+    color: #ffffff; /* Texto branco */
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    box-sizing: border-box; /* Garante que o padding não aumente o tamanho */
+}
+
+/* Efeito de foco nos campos */
+.entrada-form input:focus,
+.entrada-form select:focus {
+    border-color: #8A2BE2; /* Roxo vibrante ao focar */
+    background-color: #555; /* Fundo mais claro ao focar */
+}
+
+/* Estilo do botão */
+.entrada-form button {
+    background-color: #8A2BE2; /* Roxo vibrante */
+    color: #ffffff;
+    font-weight: bold;
     cursor: pointer;
-    margin-top: 10px;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #45a049;
+.entrada-form button:hover {
+    background-color: #7B1FA2; /* Roxo mais escuro ao passar o mouse */
 }
 
-table {
+/* Lista de Produtos Cadastrados */
+.produtos-container {
+    flex: 1; /* Ocupa o espaço disponível */
+    overflow-x: auto; /* Adiciona barra de rolagem horizontal se necessário */
+    padding: 20px; /* Padding interno */
+}
+
+.entrada-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    color: #ffffff; /* Texto branco */
 }
 
-table th, table td {
-    padding: 8px;
-    border: 1px solid #ddd;
+.entrada-table th,
+.entrada-table td {
+    padding: 10px;
+    border: 1px solid #444; /* Borda escura */
     text-align: left;
 }
 
-table th {
-    background-color: #f2f2f2;
+.entrada-table th {
+    background-color: #8A2BE2; /* Roxo vibrante */
+    color: #ffffff;
+}
+
+.entrada-table tr:nth-child(even) {
+    background-color: #333; /* Fundo escuro para linhas pares */
+}
+
+.entrada-table tr:hover {
+    background-color: #444; /* Fundo mais claro ao passar o mouse */
+    transition: background-color 0.3s ease; /* Transição suave */
+}
+
+/* Mensagens */
+.message {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: #333; /* Fundo escuro */
+    color: #ffffff; /* Texto branco */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .entrada-container {
+        flex-direction: column; /* Empilha o formulário e a lista em telas pequenas */
+        gap: 20px; /* Reduz o espaçamento em telas menores */
+    }
+
+    .entrada-form,
+    .produtos-container {
+        padding: 10px; /* Reduz o padding em telas menores */
+    }
+
+    .entrada-card {
+        max-width: 100%; /* Ocupa toda a largura em telas pequenas */
+    }
 }

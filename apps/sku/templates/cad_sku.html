@@ -1,0 +1,75 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <a href="{% url 'home' %}">MENU</a>
+    <title>Cadastro de SKU e Sufixos</title>
+</head>
+<body>
+    <h1>Cadastro de SKU e Sufixos</h1>
+
+    <!-- Formulário de Busca do SKU -->
+    <form method="POST" action="{% url 'cad_sku_sufixo' %}">
+        {% csrf_token %}
+        <label for="sku">Digite o SKU:</label>
+        <input type="number" id="sku" name="sku" value="{{ request.POST.sku }}" required>
+        <button type="submit">Buscar SKU</button>
+    </form>
+
+    {% if sku_instance %}
+        <h2>SKU Encontrado</h2>
+        <p><strong>SKU:</strong> {{ sku_instance.sku }}</p>
+        <p><strong>Modelo:</strong> {{ sku_instance.modelo }}</p>
+
+        <h3>Sufixos Associados:</h3>
+        <ul>
+            {% for sufixo in sufixos %}
+                <li>{{ sufixo.sufixo }}</li>
+            {% empty %}
+                <li>Não há sufixos cadastrados para este SKU.</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Formulário para adicionar novo sufixo -->
+        <h3>Cadastrar Novo Sufixo para este SKU:</h3>
+        <form method="POST" action="{% url 'cad_sku_sufixo' %}">
+            {% csrf_token %}
+            <input type="hidden" name="sku" value="{{ sku_instance.sku }}">
+            <label for="sufixo">Novo Sufixo:</label>
+            <input type="text" id="sufixo" name="sufixo" required>
+            <button type="submit">Cadastrar Sufixo</button>
+        </form>
+
+    {% elif request.method == 'POST' %}
+        <h2>SKU Não Encontrado</h2>
+        <p>Você pode cadastrá-lo junto com um modelo e um sufixo inicial.</p>
+
+        <!-- Formulário para cadastrar novo SKU -->
+        <h3>Cadastrar Novo SKU:</h3>
+        <form method="POST" action="{% url 'cad_sku_sufixo' %}">
+            {% csrf_token %}
+            <label for="sku">SKU:</label>
+            <input type="number" name="sku" value="{{ request.POST.sku }}" required>
+            
+            <label for="modelo">Modelo:</label>
+            <input type="text" id="modelo" name="modelo" required>
+            
+            <label for="sufixo">Sufixo Inicial:</label>
+            <input type="text" id="sufixo" name="sufixo" required>
+
+            <button type="submit">Cadastrar SKU</button>
+        </form>
+    {% endif %}
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
