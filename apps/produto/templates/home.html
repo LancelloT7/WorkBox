@@ -33,6 +33,12 @@
                 </a>
             </div>
             <div class="menu-item">
+                <a href="{% url 'consulta_serie' %}">
+                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Conserto">
+                    <p>Conserto</p>
+                </a>
+            </div>
+            <div class="menu-item">
                 <a href="{% url 'cad_sku_sufixo' %}">
                     <img src="{% static 'imagens/cadastro_sku.png' %}" alt="Cadastro de SKU">
                     <p>Cadastro de SKU</p>
@@ -64,7 +70,7 @@
             </div>
             <div class="menu-item">
                 <a href="{% url 'consulta_serie' %}">
-                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Sair">
+                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Consultar por S/N">
                     <p>Consulta por S/N</p>
                 </a>
             </div>
