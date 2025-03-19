@@ -13,7 +13,7 @@ class Sku(models.Model):
 
 class Sufixo(models.Model):
     sku = models.ForeignKey(Sku, on_delete=models.CASCADE, related_name="sku_sufixo")
-    sufixo = models.CharField(max_length=100, unique=True)
+    sufixo = models.CharField(max_length=100, unique=False)
 
     def __str__(self):
         return f"{self.sku} - {self.sufixo}"
