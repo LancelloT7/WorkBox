@@ -28,6 +28,7 @@ urlpatterns = [
     path('pecas/', include('pecas.urls')),
     path('autenticacao/', include('autenticacao.urls')),
     path('pedido/', include('pedido.urls')),
+    path('conserto/', include('conserto.urls')),
     path('', views.logar),
     
 

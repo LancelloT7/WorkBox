@@ -55,10 +55,13 @@ def salvar_codigos_pedido(request, produto_id):
     return redirect('consulta_pedido')
 
 
+
 @login_required(login_url='logar')
 def salvar_codigos_pedido(request, produto_id):
     # Obtém o produto pelo ID ou retorna 404 se não existir
     produto = get_object_or_404(Produto, id=produto_id)
+    produto.status = "AGUARDANDO PEÇA"
+    produto.save()
     
     # Obtém todas as peças associadas ao produto
     pecas = ProdutoPeca.objects.filter(produto=produto).select_related('peca')

@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'triagem',
     'pecas',
     'pedido',
+    'conserto',
     
 ]
 
