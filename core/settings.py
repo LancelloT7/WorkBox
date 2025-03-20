@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'pecas',
     'pedido',
     'conserto',
+    'embalagem',
     
 ]
 

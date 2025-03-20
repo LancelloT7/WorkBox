@@ -14,6 +14,7 @@ class Produto(models.Model):
         ('AGUARDANDO PEÇA', 'AGUARDANDO PEÇA'),
         ('LIBERADO PARA CONSERTO', 'LIBERADO PARA CONSERTO'),
         ('EMBALAGEM', 'EMBALAGEM'),
+        ('EMBALADO', 'EMBALADO'),
         ('ENCERRADO', 'ENCERRADO'),
     ]
     DEFEITO_CHOICES = [

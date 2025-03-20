@@ -27,30 +27,7 @@
                 <p><strong>Sufixo:</strong> {{ produto.sufixo.sufixo }}</p>
                 <p><strong>Defeito:</strong> {{ produto.defeito_especifico }}</p>
             </div>
-    
-            <h3>Peças Associadas</h3>
-            {% if pecas %}
-                <div class="pecas-container">
-                    {% for peca in pecas %}
-                        
-                        <div class="peca-card">
-                            <h1>{{ peca.tipo_peca_display }}</h1>
-                            <h4>{{ peca.descricao }}</h4>
-                            <p><strong>Part Number:</strong> {{ peca.part_number }}</p>
-                            <p><strong>Posição:</strong> {{ peca.posicao }}</p>
-                            <p><strong>Status:</strong> {{ peca.status }}</p>                       
-                            <p><strong>Defeito:</strong> {{ peca.defeito_pecas_display }}</p>
-                            {% if peca.numero_pedido %}
-                                <p><strong>Numero Pedido:</strong> {{ peca.numero_pedido }}</p>
-                            {% endif %}
-                            
-                        </div>
-                    {% endfor %}
-                </div>
-                <hr>
-            {% else %}
-                <p>Nenhuma peça associada.</p>
-            {% endif %}
+            <hr>
         {% endfor %}    
     {% endif %}
 </div>

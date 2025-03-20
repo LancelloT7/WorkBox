@@ -29,8 +29,6 @@ urlpatterns = [
     path('autenticacao/', include('autenticacao.urls')),
     path('pedido/', include('pedido.urls')),
     path('conserto/', include('conserto.urls')),
+    path('embalagem/', include('embalagem.urls')),
     path('', views.logar),
-    
-
-
 ]

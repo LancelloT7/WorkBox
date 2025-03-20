@@ -7,10 +7,14 @@
     <link rel="stylesheet" href="{% static 'css/conserto.css' %}">
     <title>Conserto de Produtos</title>
     
+    
+    
 </head>
 <body>
 
     <h2>Atualizar Status dos Produtos</h2>
+
+
 
     <!-- Exibe mensagens de sucesso/erro -->
     {% if messages %}
@@ -23,6 +27,12 @@
 
     <form method="POST">
         {% csrf_token %}
+        <h2>Responsavel Conserto</h2>
+        <select name='funcionario'>
+            {% for funcionario in funcionarios %}
+                <option value="{{ funcionario.id }}">{{ funcionario.nome }}</option>
+            {% endfor %}
+        </select>
         
         <div id="ptn-container">
             <input type="text" name="ptn" placeholder="Digite um PTN" required>

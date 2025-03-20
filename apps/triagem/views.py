@@ -4,9 +4,12 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.messages import constants
 from django.contrib.auth.decorators import login_required
+from funcionario.models import Funcionario
 
 @login_required(login_url='logar')
+
 def cad_triagem(request):
+    funcionarios = Funcionario.objects.all()
     if hasattr(request.user, 'nivel_de_acesso') and request.user.nivel_de_acesso == 3:
         if request.method == "GET":
             return render(request, 'triagem.html')
@@ -15,7 +18,7 @@ def cad_triagem(request):
             try:
                 ptn = request.POST.get('ptn').upper()
                 produto = Produto.objects.get(ptn=ptn)  
-                return render(request, 'form_triagem.html', {'produto': produto, 'defeito_especifico_choices': Produto.DEFEITO_ESPECIFICO})
+                return render(request, 'form_triagem.html', {'produto': produto, 'defeito_especifico_choices': Produto.DEFEITO_ESPECIFICO, 'funcionarios':funcionarios})
             except Produto.DoesNotExist:
                 messages.add_message(request, constants.ERROR, 'Produto não encontrado')
                 return render(request, 'triagem.html')
@@ -27,6 +30,7 @@ def buscar(request):
     ptn = request.GET.get('ptn', None).upper()
     if ptn:
         produto = get_object_or_404(Produto, ptn=ptn)
+        funcionarios = Funcionario.objects.all()
         data = {
             'status': produto.status,
             'data_entrada': produto.data_entrada.strftime('%d/%m/%Y %H:%M'),
@@ -43,6 +47,8 @@ def buscar(request):
             'responsavel_entrada': produto.responsavel_entrada.nome if produto.responsavel_entrada else 'Não atribuído',
             'responsavel_saida': produto.responsavel_saida.nome if produto.responsavel_saida else 'Não atribuído',
             'responsavel_triagem': produto.responsavel_triagem.nome if produto.responsavel_triagem else 'Não atribuído',
+            
+        
         }
         return JsonResponse(data)
 
@@ -52,7 +58,11 @@ def buscar(request):
 def form_triagem(request):
     if request.method == "POST":
         ptn = request.POST.get('ptn').upper()
+        funcionario_id = request.POST.get('funcionario_id')
+        funcionario = get_object_or_404(Funcionario, id=funcionario_id)
+
         produto = get_object_or_404(Produto, ptn=ptn)
+        produto.responsavel_triagem = funcionario
         produto.defeito_especifico = request.POST.get('defeito_especifico')
         if produto.status == "ENTRADA":
             produto.status = "TRIAGEM"

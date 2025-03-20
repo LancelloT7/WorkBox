@@ -3,6 +3,12 @@
 <a href="{% url 'home' %}">MENU</a>
 <title>TRIAGEM</title>
 <form method="POST" action="{% url 'form_triagem' %}">
+    <p><strong>Responsavel Triagem</strong>
+    <select name="funcionario_id" required>
+        {% for funcionario in funcionarios %}
+            <option value="{{ funcionario.id }}">{{ funcionario.nome }}</option>
+        {% endfor %}
+    </select>
     {% csrf_token %}
     <p><strong>Status:</strong>{{produto.status}}</p>
     <p><strong>Data de Entrada:</strong> {{produto.data_entrada}}</p>
