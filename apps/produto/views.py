@@ -9,6 +9,7 @@ from pecas.models import ProdutoPeca
 
 
 
+
 @login_required(login_url='logar')
 def consulta_total(request):
     if request.method == "GET":

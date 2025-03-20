@@ -33,6 +33,7 @@
 
         <!-- Exibe informações do produto se encontrado -->
         {% if produto %}
+
             <div class="produto-info">
                 <h2>Produto Encontrado</h2>
                 <ul>
@@ -48,6 +49,13 @@
                 
             <form method="POST" action="{% url 'adicionar_pecas' produto.id %}">
                 {% csrf_token %}
+                <h2>Responsavel Conserto</h2>
+                <select name='funcionario'>
+                    {% for funcionario in funcionarios %}
+                        <option value="{{ funcionario.id }}">{{ funcionario.nome }}</option>
+                    {% endfor %}
+                </select>
+                
                 <div class="pecas-container">
                     {% for peca in pecas %}
                         <div class="peca-card">

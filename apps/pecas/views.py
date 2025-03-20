@@ -6,8 +6,9 @@ from django.contrib.messages import constants
 from django.http import JsonResponse, HttpResponse
 from produto.models import Produto
 from django.contrib.auth.decorators import login_required
+from funcionario.models import Funcionario
 
-# Create your views here.
+# Procurar SKU para cadastrar uma nova peça
 @login_required(login_url='logar')
 def verificar_sku(request):
     if request.method == 'POST':
@@ -40,6 +41,7 @@ def cadastrar_pecas(request, sku):
         posicao = request.POST.get('posicao', '')
         defeito_pecas = request.POST.get('defeito_pecas', '')
 
+
         # Verifica se o sufixo pertence ao SKU
         try:
             sufixo_instance = Sufixo.objects.get(sufixo=sufixo, sku=sku_instance)
@@ -71,10 +73,13 @@ def cadastrar_pecas(request, sku):
         'sufixos': sufixos,
     })
 
+
+# Buscar produto para adicionar peças
 @login_required(login_url='logar')
 def buscar_produto(request):
+    funcionarios = Funcionario.objects.all()
     if request.method == "GET":
-        return render(request, "buscar_produto.html")
+        return render(request, "buscar_produto.html", {'funcionarios':funcionarios})
 
     elif request.method == "POST":
         procura = request.POST.get("procura", "").strip().upper()
@@ -94,6 +99,7 @@ def buscar_produto(request):
                         "pecas": pecas,
                         "tipo_peca_choices": tipo_peca_choices,
                         "defeito_pecas_choices": defeito_pecas_choices,
+                        "funcionarios":funcionarios,
                     })
                 else:
                     return render(request, "buscar_produto.html", {"erro": "Nenhuma peça encontrada para este produto!"})
@@ -109,6 +115,7 @@ def adicionar_pecas(request, produto_id=None):
     erro = None
     produto = None
     pecas = Peca.objects.all()  # Você pode filtrar as peças conforme necessário
+    funcionarios = Funcionario.objects.all()  # Listando funcionários para escolher um responsável
 
     if request.method == 'POST':
         # Verificando se estamos buscando um produto pelo PTN
@@ -122,7 +129,13 @@ def adicionar_pecas(request, produto_id=None):
         # Verificando se estamos associando peças a um produto
         elif 'pecas' in request.POST and produto_id:
             produto = get_object_or_404(Produto, id=produto_id)
-            pecas_selecionadas = request.POST.getlist('pecas')  # Obtendo as peças selecionadas
+            pecas_selecionadas = request.POST.getlist('pecas')
+            funcionario_id = request.POST.get('funcionario')  # Obtendo o ID do responsável
+            funcionario = get_object_or_404(Funcionario, id=funcionario_id)
+
+            # Atualizando o responsável pelas peças no produto
+            produto.responsavel_pecas = funcionario
+            produto.save()
 
             for peca_id in pecas_selecionadas:
                 peca = get_object_or_404(Peca, id=peca_id)  # Obtenha a peça com base no ID
@@ -148,7 +161,7 @@ def adicionar_pecas(request, produto_id=None):
             produto.save()
 
             # Mensagem de sucesso
-            messages.success(request, "Peça adicionada ao produto com sucesso!")
+            messages.success(request, "Peça adicionada ao produto e responsável atualizado com sucesso!")
             # Redirecionando para a página de adicionar peças com o produto já associado
             return redirect('adicionar_pecas', produto_id=produto.id)
 
@@ -156,7 +169,9 @@ def adicionar_pecas(request, produto_id=None):
         'produto': produto,
         'erro': erro,
         'pecas': pecas,
+        'funcionarios': funcionarios,  # Enviando funcionários para o template
     })
+
 
     
     

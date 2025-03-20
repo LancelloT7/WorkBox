@@ -59,6 +59,9 @@ class Produto(models.Model):
     responsavel_triagem = models.ForeignKey(
         Funcionario, on_delete=models.SET_NULL, null=True, related_name="responsavel_triagem"
     )
+    responsavel_pecas = models.ForeignKey(
+        Funcionario, on_delete=models.SET_NULL, null=True, related_name="responsavel_pecas"
+    )
     @property
     def tipo_defeito(self):
         # Retorna a descrição do defeito correspondente ao código

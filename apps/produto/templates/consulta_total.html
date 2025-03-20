@@ -28,6 +28,9 @@
                 {% if produto.responsavel_triagem %}
                     <p><strong>Responsável Triagem:</strong> {{ produto.responsavel_triagem.nome }}</p>
                 {% endif %}
+                {% if produto.responsavel_pecas %}
+                    <p><strong>Responsável Peças:</strong> {{ produto.responsavel_pecas.nome }}</p>
+                {% endif %}
                 {% if produto.responsavel_conserto %}
                     <p><strong>Responsável Conserto:</strong> {{ produto.responsavel_conserto.nome }}</p>
                 {% endif %}
@@ -42,61 +45,59 @@
                 <p><strong>Sufixo:</strong> {{ produto.sufixo.sufixo }}</p>
                 <p><strong>Defeito:</strong> {{ produto.defeito_especifico }}</p>
             </div>
-
-            <h3>Peças Associadas</h3>
             {% if pecas %}
+                <h3>Peças Associadas</h3>
                 <div class="pecas-container">
-                    {% for item in pecas %}
-                        
-                        {% if item.tipo_peca_display == "Garantia" %}
-                            <h1>GARANTIA</h1>
-                            <div class="peca-card">
-                                <h1>{{ item.tipo_peca_display }}</h1> <!-- Tipo de Peça -->
-                                <h4>{{ item.peca.descricao }}</h4> <!-- Descrição da Peça -->
-                                <p><strong>Part Number:</strong> {{ item.peca.part_number }}</p> <!-- Part Number da Peça -->
-                                <p><strong>Posição:</strong> {{ item.peca.posicao }}</p> <!-- Posição da Peça -->
-                                <p><strong>Status:</strong> {{ item.status }}</p> <!-- Status da Peça -->
-                                <p><strong>Defeito:</strong> {{ item.defeito_peca_display }}</p> <!-- Defeito da Peça -->
-                                <p><strong>Tipo de Peça:</strong> {{ item.tipo_peca_display }}</p> <!-- Tipo de Peça -->
-                                
+                    <div class="peca-section">
+                        <h2>Garantia</h2>
+                        {% for item in pecas %}
+                            {% if item.tipo_peca_display == "Garantia" %}
+                                <div class="peca-card">
+                                    <h4>{{ item.peca.descricao }}</h4>
+                                    <p><strong>Part Number:</strong> {{ item.peca.part_number }}</p>
+                                    <p><strong>Posição:</strong> {{ item.peca.posicao }}</p>
+                                    <p><strong>Status:</strong> {{ item.status }}</p>
+                                    <p><strong>Defeito:</strong> {{ item.defeito_peca_display }}</p>
+                                    <p><strong>Responsável Peças:</strong> {{ item.responsavel_pecas.nome }}</p>
                                     {% if item.numero_pedido %}
-                                        <p><strong>Número do Pedido:</strong> 
-                                        {{ item.numero_pedido }}
+                                        <p><strong>Número do Pedido:</strong> {{ item.numero_pedido }}</p>
                                     {% endif %}
-                            <hr>
-                        {% else %}
-                                         
-                            <h1>Orçamento</h1>
-                            <div class="peca-card">
-                                <h1>{{ item.tipo_peca_display }}</h1> <!-- Tipo de Peça -->
-                                <h4>{{ item.peca.descricao }}</h4> <!-- Descrição da Peça -->
-                                <p><strong>Part Number:</strong> {{ item.peca.part_number }}</p> <!-- Part Number da Peça -->
-                                <p><strong>Posição:</strong> {{ item.peca.posicao }}</p> <!-- Posição da Peça -->
-                                <p><strong>Status:</strong> {{ item.status }}</p> <!-- Status da Peça -->
-                                <p><strong>Defeito:</strong> {{ item.defeito_peca_display }}</p> <!-- Defeito da Peça -->
-                                <p><strong>Tipo de Peça:</strong> {{ item.tipo_peca_display }}</p> <!-- Tipo de Peça -->
-                                
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="peca-section">
+                        <h2>Orçamento</h2>
+                        {% for item in pecas %}
+                            {% if item.tipo_peca_display != "Garantia" %}
+                                <div class="peca-card">
+                                    <h4>{{ item.peca.descricao }}</h4>
+                                    <p><strong>Part Number:</strong> {{ item.peca.part_number }}</p>
+                                    <p><strong>Posição:</strong> {{ item.peca.posicao }}</p>
+                                    <p><strong>Status:</strong> {{ item.status }}</p>
+                                    <p><strong>Defeito:</strong> {{ item.defeito_peca_display }}</p>
+                                    <p><strong>Responsável Peças:</strong> {{ item.responsavel_pecas.nome }}</p>
                                     {% if item.numero_pedido %}
-                                        <p><strong>Número do Pedido:</strong> 
-                                        {{ item.numero_pedido }}
-                                    {% endif %} 
-                            <hr>        
-                        {% endif %}    
-                        </div>
-                    {% endfor %}
+                                        <p><strong>Número do Pedido:</strong> {{ item.numero_pedido }}</p>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             {% else %}
-                <p>Nenhuma peça associada.</p>
+                {% if messages %}
+                    <div class="alert alert-danger">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             {% endif %}
         {% else %}
-            {% if messages %}
-                <div class="alert alert-danger">
-                    {% for message in messages %}
-                        <p>{{ message }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endif %}
+            <p>Nenhuma peça associada.</p>       
+        {% endif %}   
     </div>
 </body>
 </html>
