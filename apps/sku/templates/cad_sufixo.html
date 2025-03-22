@@ -1,17 +1,26 @@
-{% if messages %}
-    {% for message in messages %}
-        {{message}}
-    {% endfor %}
-{% endif %}
-<a href="{% url 'home' %}">MENU</a>
-<title>Cadastro de Sufixo</title>
-<form method="POST" action="{% url 'cad_sufixo' %}">
-    {% csrf_token %}
+{% extends 'base.html' %}  <!-- Estende o template base -->
+{% load static %}  <!-- Mantém o carregamento de arquivos estáticos -->
 
-    <input type="number" placeholder="SKU" name="sku">
-    <input type="text" placeholder="SUFIXO" name="sufixo">
-    <hr>
-    <input class="btn btn-success" type="submit" value="CADASTRAR">
+{% block title %}Cadastro de Sufixo{% endblock %}  <!-- Define o título da página -->
 
-</form>
+{% block content %}
+    <div class="container">
+        <h2>Cadastro de Sufixo</h2>
 
+        <!-- Exibe mensagens de sucesso/erro -->
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Formulário de cadastro de sufixo -->
+        <form method="POST" action="{% url 'cad_sufixo' %}">
+            {% csrf_token %}
+            <input type="number" placeholder="SKU" name="sku" required>
+            <input type="text" placeholder="SUFIXO" name="sufixo" required>
+            <hr>
+            <button type="submit" class="btn btn-success">CADASTRAR</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,14 +1,14 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta Total</title>
+{% extends 'base.html' %}  <!-- Estende o template base -->
+{% load static %}  <!-- Mantém o carregamento de arquivos estáticos -->
+
+{% block title %}Consulta Total{% endblock %}  <!-- Define o título da página -->
+
+{% block extra_css %}
+    <!-- CSS específico para a página de Consulta Total -->
     <link rel="stylesheet" href="{% static 'css/consulta.css' %}">
-    
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <a href="{% url 'home' %}">MENU</a>
         <h2>Buscar Produto</h2>
@@ -48,6 +48,8 @@
             </div>
 
             {% if pecas %}
+                <hr>
+                
                 <h3>Peças Associadas</h3>
                 <hr>
                 <br>
@@ -71,8 +73,10 @@
                             {% endif %}
                         {% endfor %}
                     </div>
+                    
                 </section>
-
+                <hr>
+                
                 <!-- Seção de Peças de Orçamento -->
                 <section class="peca-section">
                     <h2>Peças de Orçamento</h2>
@@ -106,5 +110,4 @@
             <p>Nenhuma peça associada.</p>       
         {% endif %}   
     </div>
-</body>
-</html>
+{% endblock %}

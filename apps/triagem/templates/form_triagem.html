@@ -1,32 +1,49 @@
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-<a href="{% url 'home' %}">MENU</a>
-<title>TRIAGEM</title>
-<form method="POST" action="{% url 'form_triagem' %}">
-    <p><strong>Responsavel Triagem</strong>
-    <select name="funcionario_id" required>
-        {% for funcionario in funcionarios %}
-            <option value="{{ funcionario.id }}">{{ funcionario.nome }}</option>
-        {% endfor %}
-    </select>
-    {% csrf_token %}
-    <p><strong>Status:</strong>{{produto.status}}</p>
-    <p><strong>Data de Entrada:</strong> {{produto.data_entrada}}</p>
-    <p><strong>Responsavel Entrada:</strong> {{produto.responsavel_entrada.nome}}</p>
-    <input name="ptn" value="{{produto.ptn}}" readonly>
-    <p><strong>Série:</strong> {{produto.serie}}</p>
-    <p><strong>SKU:</strong> {{produto.sku.sku}}</p>
-    <p><strong>Sufixo:</strong> {{produto.sufixo.sufixo}}</p>
-    <p><strong>Modelo:</strong> {{produto.sku.modelo}}</p>
-    <p><strong>Defeito:</strong> {{produto.defeito}}</p>
-    <p><strong>Observacao:</strong> {{produto.observacao}}</p>
+{% extends 'base.html' %}  <!-- Estende o template base -->
+{% load static %}  <!-- Mantém o carregamento de arquivos estáticos -->
 
-    <select name="defeito_especifico" required>
-        <option value="">Selecione um defeito</option>
-        {% for chave, valor in defeito_especifico_choices %}
-            <option value="{{ chave }}">{{ valor }}</option>
-        {% endfor %}
-    </select>
-    <hr>
-    <input type="submit" value="CADASTRAR">
-</form>
+{% block title %}Triagem{% endblock %}  <!-- Define o título da página -->
+
+{% block extra_css %}
+    <!-- CSS específico para a página de Triagem -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>Formulário de Triagem</h2>
+
+        <!-- Formulário de triagem -->
+        <form method="POST" action="{% url 'form_triagem' %}">
+            <p><strong>Responsável Triagem:</strong></p>
+            <select name="funcionario_id" required>
+                {% for funcionario in funcionarios %}
+                    <option value="{{ funcionario.id }}">{{ funcionario.nome }}</option>
+                {% endfor %}
+            </select>
+
+            {% csrf_token %}
+
+            <p><strong>Status:</strong> {{ produto.status }}</p>
+            <p><strong>Data de Entrada:</strong> {{ produto.data_entrada }}</p>
+            <p><strong>Responsável Entrada:</strong> {{ produto.responsavel_entrada.nome }}</p>
+            <input name="ptn" value="{{ produto.ptn }}" readonly>
+            <p><strong>Série:</strong> {{ produto.serie }}</p>
+            <p><strong>SKU:</strong> {{ produto.sku.sku }}</p>
+            <p><strong>Sufixo:</strong> {{ produto.sufixo.sufixo }}</p>
+            <p><strong>Modelo:</strong> {{ produto.sku.modelo }}</p>
+            <p><strong>Defeito:</strong> {{ produto.defeito }}</p>
+            <p><strong>Observação:</strong> {{ produto.observacao }}</p>
+
+            <p><strong>Defeito Específico:</strong></p>
+            <select name="defeito_especifico" required>
+                <option value="">Selecione um defeito</option>
+                {% for chave, valor in defeito_especifico_choices %}
+                    <option value="{{ chave }}">{{ valor }}</option>
+                {% endfor %}
+            </select>
+
+            <hr>
+            <input type="submit" value="CADASTRAR">
+        </form>
+    </div>
+{% endblock %}

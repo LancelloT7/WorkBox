@@ -1,48 +1,66 @@
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-<input type="text" id="codigo_produto" placeholder="Digite o código">
-<a href="{% url 'home' %}">MENU</a>
-<button id="buscar">Buscar</button>
+{% extends 'base.html' %}  <!-- Estende o template base -->
+{% load static %}  <!-- Mantém o carregamento de arquivos estáticos -->
 
-<div id="resultado"></div>
+{% block title %}Buscar Produto{% endblock %}  <!-- Define o título da página -->
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function(){
-    $("#buscar").click(function(){
-        let codigo = $("#codigo_produto").val().trim();
+{% block extra_css %}
+    <!-- CSS específico para a página de Busca -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
 
-        if (!codigo) {
-            $("#resultado").html("<p style='color:red;'>Por favor, digite um código!</p>");
-            return;
-        }
+{% block content %}
+    <div class="container">
+        <h2>Buscar Produto</h2>
 
-        $.ajax({
-            url: "{% url 'buscar' %}",  // Garante que está usando a URL nomeada no Django
-            type: "GET",
-            data: { ptn: codigo },
-            dataType: "json",
-            success: function(data) {
-                $("#resultado").html(
-                    `<p><strong>Status:</strong> ${data.status}</p>
-                     <p><strong>Data de Entrada:</strong> ${data.data_entrada}</p>
-                     <p><strong>Responsavel Entrada:</strong> ${data.responsavel_entrada}</p>
-                     <p><strong>PTN:</strong> ${data.ptn}</p>
-                     <p><strong>Série:</strong> ${data.serie}</p>
-                     <p><strong>SKU:</strong> ${data.sku}</p>
-                     <p><strong>Sufixo:</strong> ${data.sufixo}</p>
-                     <p><strong>Modelo:</strong> ${data.modelo}</p>
-                     <p><strong>Defeito:</strong> ${data.defeito}</p>`
-                );
-            },
-            error: function(xhr) {
-                let mensagemErro = "Produto não encontrado!";
-                if (xhr.responseJSON && xhr.responseJSON.erro) {
-                    mensagemErro = xhr.responseJSON.erro;
+        <!-- Campo de busca e botão -->
+        <input type="text" id="codigo_produto" placeholder="Digite o código">
+        <button id="buscar">Buscar</button>
+
+        <!-- Resultado da busca -->
+        <div id="resultado"></div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <!-- JavaScript específico para a página de Busca -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#buscar").click(function(){
+                let codigo = $("#codigo_produto").val().trim();
+
+                if (!codigo) {
+                    $("#resultado").html("<p style='color:red;'>Por favor, digite um código!</p>");
+                    return;
                 }
-                $("#resultado").html(`<p style='color:red;'>${mensagemErro}</p>`);
-            }
+
+                $.ajax({
+                    url: "{% url 'buscar' %}",  // Garante que está usando a URL nomeada no Django
+                    type: "GET",
+                    data: { ptn: codigo },
+                    dataType: "json",
+                    success: function(data) {
+                        $("#resultado").html(
+                            `<p><strong>Status:</strong> ${data.status}</p>
+                             <p><strong>Data de Entrada:</strong> ${data.data_entrada}</p>
+                             <p><strong>Responsavel Entrada:</strong> ${data.responsavel_entrada}</p>
+                             <p><strong>PTN:</strong> ${data.ptn}</p>
+                             <p><strong>Série:</strong> ${data.serie}</p>
+                             <p><strong>SKU:</strong> ${data.sku}</p>
+                             <p><strong>Sufixo:</strong> ${data.sufixo}</p>
+                             <p><strong>Modelo:</strong> ${data.modelo}</p>
+                             <p><strong>Defeito:</strong> ${data.defeito}</p>`
+                        );
+                    },
+                    error: function(xhr) {
+                        let mensagemErro = "Produto não encontrado!";
+                        if (xhr.responseJSON && xhr.responseJSON.erro) {
+                            mensagemErro = xhr.responseJSON.erro;
+                        }
+                        $("#resultado").html(`<p style='color:red;'>${mensagemErro}</p>`);
+                    }
+                });
+            });
         });
-    });
-});
-</script>
+    </script>
+{% endblock %}

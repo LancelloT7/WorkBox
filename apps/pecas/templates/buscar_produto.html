@@ -1,26 +1,40 @@
+{% extends 'base.html' %}  <!-- Estende o template base -->
 {% load static %}
+{% block title %}Adicionar Peças{% endblock %}  <!-- Define o título da página -->
 
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <a href="{% url 'home' %}">MENU</a>
+{% block extra_css %}
     
-    <title>Adicionar Peças</title>
-    {% if messages %}
-        {% for message in messages %}
-            {{message}}
-        {% endfor %}
-    {% endif %}
-
+    <!-- CSS específico para a página de Adicionar Peças -->
     <link rel="stylesheet" href="{% static 'css/add_pecas.css' %}">
-</head>
-<body>
+    <style>
+        /* Estilos para o campo de busca */
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .search-container input:focus {
+            outline: none;
+            border-color: #6200ea;
+        }
+        .peca-card.hide {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    
     <div class="container">
         <h1>Adicionar Peças ao Produto</h1>
         
-        <!-- Formulário de Busca -->
+        <!-- Formulário de Busca do Produto -->
         <form method="POST" class="form-busca">
             {% csrf_token %}
             <input type="text" name="procura" placeholder="Digite o PTN do produto" required>
@@ -33,7 +47,6 @@
 
         <!-- Exibe informações do produto se encontrado -->
         {% if produto %}
-
             <div class="produto-info">
                 <h2>Produto Encontrado</h2>
                 <ul>
@@ -46,10 +59,15 @@
             </div>
 
             <h3>Selecionar Peças</h3>
+
+            <!-- Campo de busca para filtrar peças -->
+            <div class="search-container">
+                <input type="text" id="search-pecas" placeholder="Buscar peças por descrição, posição ou part number...">
+            </div>
                 
             <form method="POST" action="{% url 'adicionar_pecas' produto.id %}">
                 {% csrf_token %}
-                <h2>Responsavel Conserto</h2>
+                <h2>Responsável Conserto</h2>
                 <select name='funcionario'>
                     {% for funcionario in funcionarios %}
                         <option value="{{ funcionario.id }}">{{ funcionario.nome }}</option>
@@ -58,7 +76,7 @@
                 
                 <div class="pecas-container">
                     {% for peca in pecas %}
-                        <div class="peca-card">
+                        <div class="peca-card" data-descricao="{{ peca.descricao|lower }}" data-posicao="{{ peca.posicao|lower }}" data-partnumber="{{ peca.part_number|lower }}">
                             <label>
                                 <input type="checkbox" name="pecas" value="{{ peca.id }}">
                                 <span class="descricao">
@@ -89,5 +107,28 @@
             </form>
         {% endif %}
     </div>
-</body>
-</html>
+{% endblock %}
+
+{% block extra_js %}
+    <!-- JavaScript específico para a página de Adicionar Peças -->
+    <script>
+        // Função para filtrar as peças
+        document.getElementById('search-pecas').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase(); // Converte o termo de busca para minúsculas
+            const pecas = document.querySelectorAll('.peca-card'); // Seleciona todos os cards de peças
+
+            pecas.forEach(peca => {
+                const descricao = peca.getAttribute('data-descricao');
+                const posicao = peca.getAttribute('data-posicao');
+                const partNumber = peca.getAttribute('data-partnumber');
+
+                // Verifica se o termo de busca está na descrição, posição ou part number
+                if (descricao.includes(searchTerm) || posicao.includes(searchTerm) || partNumber.includes(searchTerm)) {
+                    peca.classList.remove('hide'); // Mostra a peça
+                } else {
+                    peca.classList.add('hide'); // Oculta a peça
+                }
+            });
+        });
+    </script>
+{% endblock %}

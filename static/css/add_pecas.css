@@ -244,3 +244,24 @@ button[type="submit"]:hover {
         width: 100%; /* 1 peça por linha em telas pequenas */
     }
 }
+
+        /* Estilos para o campo de busca */
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .search-container input:focus {
+            outline: none;
+            border-color: #6200ea;
+        }
+        .peca-card.hide {
+            display: none;
+        }
+    

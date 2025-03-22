@@ -1,18 +1,30 @@
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-{% if messages %}
-    {% for message in messages %}
-        {{message}}
-    {% endfor %}
-{% endif %}
-<a href="{% url 'home' %}">MENU</a>
-<title>TRIAGEM</title>
+{% extends 'base.html' %}  <!-- Estende o template base -->
+{% load static %}  <!-- Mantém o carregamento de arquivos estáticos -->
 
-<form method="POST" action="{% url 'cad_triagem' %}">
-    {% csrf_token %}
+{% block title %}Triagem{% endblock %}  <!-- Define o título da página -->
 
-    <input type="text" placeholder="PTN" name="ptn">
-    <hr>
-    <input class="btn btn-success" type="submit" value="Buscar">
+{% block extra_css %}
+    <!-- CSS específico para a página de Triagem -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
 
-</form>
+{% block content %}
+    <div class="container">
+        <h2>Triagem de Produtos</h2>
+
+        <!-- Exibe mensagens de sucesso/erro -->
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Formulário de busca de PTN -->
+        <form method="POST" action="{% url 'cad_triagem' %}">
+            {% csrf_token %}
+            <input type="text" placeholder="PTN" name="ptn" required>
+            <hr>
+            <button type="submit" class="btn btn-success">Buscar</button>
+        </form>
+    </div>
+{% endblock %}

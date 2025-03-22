@@ -1,53 +1,54 @@
+{% extends 'base.html' %}  <!-- Estende o template base -->
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}Produtos Embalados{% endblock %}  <!-- Define o título da página -->
+
+{% block extra_css %}
+    <!-- CSS específico para a página de Produtos Embalados -->
     <link rel="stylesheet" href="{% static 'css/conserto.css' %}">
-    <title>Produtos Embalados</title>
-    
-</head>
-<body>
+{% endblock %}
 
-    <h2>Atualizar Status dos Produtos</h2>
+{% block content %}
+    <div class="container">
+        <h2>Atualizar Status dos Produtos</h2>
 
-    <!-- Exibe mensagens de sucesso/erro -->
-    {% if messages %}
-        {% for message in messages %}
-            <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %};">
-                {{ message }}
-            </p>
-        {% endfor %}
-    {% endif %}
-
-    <form method="POST">
-        {% csrf_token %}
-        <h2>Responsavel Embalagem</h2>
-        <select name='funcionario_id'>
-            {% for funcionario in funcionarios %}
-                <option value="{{ funcionario.id }}">{{ funcionario.nome }}</option>
+        <!-- Exibe mensagens de sucesso/erro -->
+        {% if messages %}
+            {% for message in messages %}
+                <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %};">
+                    {{ message }}
+                </p>
             {% endfor %}
-        </select>
-        
-        <div id="ptn-container">
-            <input type="text" name="ptn" placeholder="Digite um PTN" required>
-        </div>
+        {% endif %}
 
-        <button type="button" onclick="addField()">Adicionar PTN</button>
-        <button type="submit">Atualizar Produtos</button>
-    </form>
+        <form method="POST">
+            {% csrf_token %}
+            <h2>Responsável Embalagem</h2>
+            <select name='funcionario_id'>
+                {% for funcionario in funcionarios %}
+                    <option value="{{ funcionario.id }}">{{ funcionario.nome }}</option>
+                {% endfor %}
+            </select>
+            
+            <div id="ptn-container">
+                <input type="text" name="ptn" placeholder="Digite um PTN" required>
+            </div>
 
-    {% if produtos %}
-        <h3>Produtos Atualizados:</h3>
-        <ul>
-            {% for produto in produtos %}
-                <li>{{ produto.ptn }} - {{ produto.status }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+            <button type="button" onclick="addField()">Adicionar PTN</button>
+            <button type="submit">Atualizar Produtos</button>
+        </form>
 
+        {% if produtos %}
+            <h3>Produtos Atualizados:</h3>
+            <ul>
+                {% for produto in produtos %}
+                    <li>{{ produto.ptn }} - {{ produto.status }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <!-- JavaScript específico para a página de Produtos Embalados -->
     <script src="{% static 'js/conserto.js' %}"></script>
-
-</body>
-</html>
+{% endblock %}

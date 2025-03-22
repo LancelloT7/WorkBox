@@ -1,20 +1,32 @@
-{% load static %}
-<a href="{% url 'home' %}">MENU</a>
-<title>Cadastrar Funcionario</title>
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-{% if messages %}
-    {% for message in messages %}
-        {{message}}
-    {% endfor %}
-{% endif %}
+{% extends 'base.html' %}  <!-- Estende o template base -->
+{% load static %}  <!-- Mantém o carregamento de arquivos estáticos -->
 
-<form method="POST" action="{% url 'cad_funcionario' %}">
-    {% csrf_token %}
+{% block title %}Cadastrar Funcionário{% endblock %}  <!-- Define o título da página -->
 
-    <input type="text" placeholder="NOME" name="nome">
-    <input type="text" placeholder="CARGO" name="cargo">
-    <input type="text" placeholder="Código" name="cod">
-    <hr>
-    <input class="btn btn-success" type="submit" value="CADASTRAR FUNCIONARIO">
+{% block extra_css %}
+    <!-- CSS específico para a página de Cadastrar Funcionário -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
 
-</form>
+{% block content %}
+    <div class="container">
+        <h2>Cadastrar Funcionário</h2>
+
+        <!-- Exibe mensagens de sucesso/erro -->
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Formulário de cadastro de funcionário -->
+        <form method="POST" action="{% url 'cad_funcionario' %}">
+            {% csrf_token %}
+            <input type="text" placeholder="NOME" name="nome" required>
+            <input type="text" placeholder="CARGO" name="cargo" required>
+            <input type="text" placeholder="Código" name="cod" required>
+            <hr>
+            <button type="submit" class="btn btn-success">CADASTRAR FUNCIONÁRIO</button>
+        </form>
+    </div>
+{% endblock %}

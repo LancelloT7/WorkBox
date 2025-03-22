@@ -1,24 +1,25 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de Pedido</title>
+{% extends 'base.html' %}  <!-- Estende o template base -->
+{% load static %}  <!-- Mantém o carregamento de arquivos estáticos -->
+
+{% block title %}Consulta de Pedido{% endblock %}  <!-- Define o título da página -->
+
+{% block extra_css %}
+    <!-- CSS específico para a página de Consulta de Pedido -->
     <link rel="stylesheet" href="{% static 'css/consulta_pedido.css' %}">
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <div class="container">
-        <a href="{% url 'home' %}">MENU</a>
         <h2>Consultar Pedido</h2>
 
         <!-- Formulário de Busca -->
         <form method="POST">
             {% csrf_token %}
-            <input type="text" name="procura" placeholder="Digite o PTN do produto">
+            <input type="text" name="procura" placeholder="Digite o PTN do produto" required>
             <button type="submit">Buscar</button>
         </form>
 
+        <!-- Exibe os detalhes do produto, se encontrado -->
         {% if produto %}
             <h3>Detalhes do Produto</h3>
             <div class="produto-info">
@@ -34,6 +35,7 @@
             </div>
         {% endif %}
 
+        <!-- Exibe as peças associadas, se houver -->
         <h3>Peças Associadas</h3>
         {% if pecas %}
             <form method="POST" action="{% url 'salvar_codigos_pedido' produto.id %}">
@@ -48,15 +50,16 @@
                             <p><strong>Status:</strong> {{ item.get_status_display }}</p> <!-- Status da Peça -->
                             <p><strong>Defeito:</strong> {{ item.get_defeito_peca_display }}</p> <!-- Defeito da Peça -->
                             <p><strong>Tipo de Peça:</strong> {{ item.get_tipo_peca_display }}</p> <!-- Tipo de Peça -->
-                            <p><strong>Número do Pedido:</strong> <input type="text" name="numero_pedido_{{ item.id }}" value="{{ item.numero_pedido|default_if_none:'' }}"></p> <!-- Número do Pedido -->
+                            <p><strong>Número do Pedido:</strong> 
+                                <input type="text" name="numero_pedido_{{ item.id }}" value="{{ item.numero_pedido|default_if_none:'' }}">
+                            </p> <!-- Número do Pedido -->
                         </div>
                     {% endfor %}
                 </div>
-                <input type="submit" value="SALVAR">
+                <button type="submit">SALVAR</button>
             </form>
         {% else %}
             <p>Nenhuma peça associada.</p>
         {% endif %}
     </div>
-</body>
-</html>
+{% endblock %}
