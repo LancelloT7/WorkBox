@@ -143,3 +143,45 @@ form button {
 form button:hover {
     background-color: #c0392b;
 }
+
+/* Novos estilos para as seções de Garantia e Orçamento */
+.peca-section {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 1px solid #444; /* Adaptado para o tema escuro */
+    border-radius: 8px;
+    background-color: #2c2c2c; /* Adaptado para o tema escuro */
+}
+
+.peca-section h2 {
+    margin-top: 0;
+    color: #ffffff; /* Adaptado para o tema escuro */
+}
+
+.peca-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem; /* Espaçamento entre os cards */
+}
+
+.peca-card-container .peca-card {
+    flex: 1 1 calc(50% - 1rem); /* Dois cards por linha com espaçamento */
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #444; /* Adaptado para o tema escuro */
+    border-radius: 4px;
+    background-color: #1e1e1e; /* Adaptado para o tema escuro */
+    box-sizing: border-box;
+}
+
+.peca-card-container .peca-card h4 {
+    margin-top: 0;
+    color: #ffffff; /* Adaptado para o tema escuro */
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #444; /* Adaptado para o tema escuro */
+    margin: 1rem 0;
+}

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta Total</title>
     <link rel="stylesheet" href="{% static 'css/consulta.css' %}">
+    
 </head>
 <body>
     <div class="container">
@@ -45,11 +46,16 @@
                 <p><strong>Sufixo:</strong> {{ produto.sufixo.sufixo }}</p>
                 <p><strong>Defeito:</strong> {{ produto.defeito_especifico }}</p>
             </div>
+
             {% if pecas %}
                 <h3>Peças Associadas</h3>
-                <div class="pecas-container">
-                    <div class="peca-section">
-                        <h2>Garantia</h2>
+                <hr>
+                <br>
+
+                <!-- Seção de Peças de Garantia -->
+                <section class="peca-section">
+                    <h2>Peças de Garantia</h2>
+                    <div class="peca-card-container">
                         {% for item in pecas %}
                             {% if item.tipo_peca_display == "Garantia" %}
                                 <div class="peca-card">
@@ -58,7 +64,6 @@
                                     <p><strong>Posição:</strong> {{ item.peca.posicao }}</p>
                                     <p><strong>Status:</strong> {{ item.status }}</p>
                                     <p><strong>Defeito:</strong> {{ item.defeito_peca_display }}</p>
-                                    <p><strong>Responsável Peças:</strong> {{ item.responsavel_pecas.nome }}</p>
                                     {% if item.numero_pedido %}
                                         <p><strong>Número do Pedido:</strong> {{ item.numero_pedido }}</p>
                                     {% endif %}
@@ -66,9 +71,12 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-                    
-                    <div class="peca-section">
-                        <h2>Orçamento</h2>
+                </section>
+
+                <!-- Seção de Peças de Orçamento -->
+                <section class="peca-section">
+                    <h2>Peças de Orçamento</h2>
+                    <div class="peca-card-container">
                         {% for item in pecas %}
                             {% if item.tipo_peca_display != "Garantia" %}
                                 <div class="peca-card">
@@ -77,7 +85,6 @@
                                     <p><strong>Posição:</strong> {{ item.peca.posicao }}</p>
                                     <p><strong>Status:</strong> {{ item.status }}</p>
                                     <p><strong>Defeito:</strong> {{ item.defeito_peca_display }}</p>
-                                    <p><strong>Responsável Peças:</strong> {{ item.responsavel_pecas.nome }}</p>
                                     {% if item.numero_pedido %}
                                         <p><strong>Número do Pedido:</strong> {{ item.numero_pedido }}</p>
                                     {% endif %}
@@ -85,7 +92,7 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-                </div>
+                </section>
             {% else %}
                 {% if messages %}
                     <div class="alert alert-danger">
