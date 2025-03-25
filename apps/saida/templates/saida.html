@@ -1,0 +1,49 @@
+{% extends 'base.html' %}  <!-- Estende o template base -->
+
+{% block title %}Conserto de Produtos{% endblock %}  <!-- Define o título da página -->
+
+{% block extra_css %}
+{% load static %}
+    <!-- CSS específico para a página de Conserto de Produtos -->
+    <link rel="stylesheet" href="{% static 'css/saida.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h2>Encerrar Produtos</h2>
+
+        <!-- Exibe mensagens de sucesso/erro -->
+        {% if messages %}
+            {% for message in messages %}
+                <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %};">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" action="{% url 'encerrar' %}">
+            {% csrf_token %}
+            <h2>Responsável Saida</h2>
+            <select name='funcionario_id'>
+                {% for funcionario in funcionarios %}
+                    <option value="{{ funcionario.id }}">{{ funcionario.nome }}</option>
+                {% endfor %}
+            </select>
+            
+            <div id="ptn-container">
+                <input type="text" name="registro" placeholder="Registro de Saida" required>
+                <input type="text" name="ptn" placeholder="Digite um PTN" required>
+            </div>
+
+            <button type="button" onclick="addField()">Adicionar PTN</button>
+            <button type="submit">Encerrar Produtos</button>
+        </form>
+
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <!-- JavaScript específico para a página de Conserto de Produtos -->
+    <script src="{% static 'js/saida.js' %}"></script>
+{% endblock %}

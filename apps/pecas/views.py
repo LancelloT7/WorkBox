@@ -50,20 +50,18 @@ def cadastrar_pecas(request, sku):
             return redirect('cadastrar_pecas', sku=sku_instance.sku)
 
         # Verifica se já existe uma peça com o mesmo part_number
-        if Peca.objects.filter(part_number=part_number).exists():
-            messages.error(request, 'Já existe uma peça com esse part number.')
-        else:
-            peca = Peca(
-                sku=sku_instance,
-                sufixo=sufixo_instance,
-                part_number=part_number,
-                descricao=descricao,
-                posicao=posicao,
-                observacao=observacao,
-                defeito_pecas=defeito_pecas
-            )
-            peca.save()
-            messages.success(request, 'Peça cadastrada com sucesso.')
+        
+        peca = Peca(
+            sku=sku_instance,
+            sufixo=sufixo_instance,
+            part_number=part_number,
+            descricao=descricao,
+            posicao=posicao,
+            observacao=observacao,
+            defeito_pecas=defeito_pecas
+        )
+        peca.save()
+        messages.success(request, 'Peça cadastrada com sucesso.')
 
     # Buscar os sufixos relacionados ao SKU
     sufixos = Sufixo.objects.filter(sku=sku_instance)
@@ -163,7 +161,7 @@ def adicionar_pecas(request, produto_id=None):
             # Mensagem de sucesso
             messages.success(request, "Peça adicionada ao produto e responsável atualizado com sucesso!")
             # Redirecionando para a página de adicionar peças com o produto já associado
-            return redirect('adicionar_pecas', produto_id=produto.id)
+            return redirect('buscar_produto')
 
     return render(request, 'buscar_produto.html', {
         'produto': produto,

@@ -22,7 +22,7 @@ def cad_sku_sufixo(request):
             return render(request, 'cad_sku.html')
 
         try:
-            # Verifica se o SKU já existe, considerando possíveis variações de maiúsculas/minúsculas
+                        # Verifica se o SKU já existe, considerando possíveis variações de maiúsculas/minúsculas
             sku_instance = Sku.objects.get(sku=sku_input)
 
             # Se o SKU for encontrado, busca os sufixos relacionados a ele

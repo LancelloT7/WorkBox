@@ -185,3 +185,11 @@ hr {
     background: #444; /* Adaptado para o tema escuro */
     margin: 1rem 0;
 }
+
+.saida-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem; /* Espaçamento entre os cards */
+    color: red; /* Cor do texto para vermelho */
+    
+}

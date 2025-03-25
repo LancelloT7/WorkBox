@@ -38,6 +38,15 @@
                 {% if produto.responsavel_embalagem %}
                     <p><strong>Responsável Embalagem:</strong> {{ produto.responsavel_embalagem.nome }}</p>
                 {% endif %}
+                {% if produto.responsavel_saida %}
+                    <hr>
+                    <div class="saida-card-container">
+                        <p><strong>Responsável Saida:</strong> {{ produto.responsavel_saida.nome }}</p>
+                        <p><strong>Data Saida:</strong> {{ produto.data_saida }}</p>
+                        <p><strong>Registro de Saida</strong> {{ produto.registro_saida }}</p>
+                    </div>                        
+                    <hr>
+                {% endif %}
                 <p><strong>PTN:</strong> {{ produto.ptn }}</p>
                 <p><strong>Série:</strong> {{ produto.serie }}</p>
                 <p><strong>Status:</strong> {{ produto.status }}</p>

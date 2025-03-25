@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'pedido',
     'conserto',
     'embalagem',
+    'saida',
+    'apps',
     
 ]
 

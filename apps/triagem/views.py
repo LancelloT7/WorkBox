@@ -10,7 +10,7 @@ from funcionario.models import Funcionario
 
 def cad_triagem(request):
     funcionarios = Funcionario.objects.all()
-    if hasattr(request.user, 'nivel_de_acesso') and request.user.nivel_de_acesso == 3:
+    if hasattr(request.user, 'nivel_de_acesso') and request.user.nivel_de_acesso >0:
         if request.method == "GET":
             return render(request, 'triagem.html')
         
@@ -24,7 +24,7 @@ def cad_triagem(request):
                 return render(request, 'triagem.html')
     messages.add_message(request, constants.ERROR, 'Você não tem acesso a esta área')
     return render(request, 'home.html')
-   
+
 @login_required(login_url='logar')
 def buscar(request):
     ptn = request.GET.get('ptn', None).upper()
@@ -47,7 +47,6 @@ def buscar(request):
             'responsavel_entrada': produto.responsavel_entrada.nome if produto.responsavel_entrada else 'Não atribuído',
             'responsavel_saida': produto.responsavel_saida.nome if produto.responsavel_saida else 'Não atribuído',
             'responsavel_triagem': produto.responsavel_triagem.nome if produto.responsavel_triagem else 'Não atribuído',
-            
         
         }
         return JsonResponse(data)
