@@ -66,4 +66,12 @@ def consulta_serie(request):
               
 @login_required(login_url='logar')        
 def home(request):
-    return render(request, 'home.html')        
+    produtos_entrada = Produto.objects.filter(status="ENTRADA")
+    produtos_triagem = Produto.objects.filter(status="TRIAGEM")
+    produtos_conserto = Produto.objects.filter(status="CONSERTO")
+
+    return render(request, 'home.html', {
+        'produtos_entrada': produtos_entrada, 
+        'produtos_triagem': produtos_triagem, 
+        'produtos_conserto': produtos_conserto
+    })

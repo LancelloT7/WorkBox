@@ -38,7 +38,7 @@ def conserto(request):
         for produto in produtos:
             produto.responsavel_conserto = responsavel_conserto
             produto.observacao = "Troca de Peça"
-            produto.status = 'EMBALAGEM'
+            produto.status = 'CONSERTO'
             produto.save()
 
         messages.add_message(request, constants.SUCCESS, "Produtos atualizados com sucesso!")

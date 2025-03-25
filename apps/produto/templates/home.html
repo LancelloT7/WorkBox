@@ -10,82 +10,37 @@
 {% block content %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <div class="container">
-        <h1>Bem-vindo ao Sistema de Gestão</h1>
-
         
-        <div class="menu">
-            <div class="menu-item">
-                <a href="{% url 'entrada' %}">
-                    <img src="{% static 'imagens/entrada.png' %}" alt="Entrada">
-                    <p>Entrada</p>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{% url 'cad_triagem' %}">
-                    <img src="{% static 'imagens/triagem.png' %}" alt="Triagem">
-                    <p>Triagem</p>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{% url 'buscar_produto' %}">
-                    <img src="{% static 'imagens/pecas.png' %}" alt="Peças">
-                    <p>Peças</p>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{% url 'conserto' %}">
-                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Conserto">
-                    <p>Conserto</p>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{% url 'encerrar' %}">
-                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Encerrar">
-                    <p>Encerrar</p>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{% url 'cad_sku_sufixo' %}">
-                    <img src="{% static 'imagens/cadastro_sku.png' %}" alt="Cadastro de SKU">
-                    <p>Cadastro de SKU</p>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{% url 'verificar_sku' %}">
-                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Cadastro de Peças">
-                    <p>Cadastro de Peças</p>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{% url 'cad_funcionario' %}">
-                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Cadastro de Funcionário">
-                    <p>Cadastro de Funcionário</p>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{% url 'consulta_total' %}">
-                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Consulta Total">
-                    <p>Consulta Total</p>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{% url 'consulta_pedido' %}">
-                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Pedidos">
-                    <p>Pedidos</p>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{% url 'consulta_serie' %}">
-                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Consultar por S/N">
-                    <p>Consulta por S/N</p>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{% url 'sair' %}">
-                    <img src="{% static 'imagens/cadastro_pecas.png' %}" alt="Sair">
-                    <p>SAIR</p>
-                </a>
-            </div>
-        </div>
+        <h1>Produtos na Entrada</h1>
+        {% for produto in produtos_entrada %}
+            <p>{{ forloop.counter }}. {{ produto.ptn }}</p>
+            <hr>
+        {% empty %}
+            <p>Nenhum produto na entrada.</p>
+        {% endfor %}
+        <hr>
+        <br>
+        
+        <h1>Produtos na Triagem</h1>
+        {% for produto in produtos_triagem %}
+            <p>{{ forloop.counter }}. {{ produto.ptn }}</p>
+            <hr>
+        {% empty %}
+            <p>Nenhum produto na triagem.</p>
+        {% endfor %}
+        <hr>
+        <br>
+        
+        <h1>Produtos no Conserto</h1>
+        {% for produto in produtos_conserto %}
+            <p>{{ forloop.counter }}. {{ produto.ptn }}</p>
+            <hr>
+        {% empty %}
+            <p>Nenhum produto no conserto.</p>
+        {% endfor %}
+        <hr>
+        <br>
+
+           
     </div>
 {% endblock %}
