@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <!-- FontAwesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
     <!-- Bloco para CSS adicional -->
     {% block extra_css %}{% endblock %}
 </head>
@@ -22,17 +23,18 @@
         <nav>
             <ul>
                 <li><a href="{% url 'entrada' %}"><i class="fas fa-home"></i> Entrada</a></li>
-                <li><a href="{% url 'cad_triagem' %}"><i class="fas fa-clipboard-list"></i> Triagem</a></li>
+                <li><a href="{% url 'cad_triagem' %}"><i class="fa-solid fa-text-height"></i> Triagem</a></li>
                 <li><a href="{% url 'buscar_produto' %}"><i class="fas fa-cogs"></i> Peças</a></li>
                 <li><a href="{% url 'conserto' %}"><i class="fas fa-tools"></i> Conserto</a></li>
-                <li><a href="{% url 'embalagem' %}"><i class="fas fa-box"></i> Embalagem</a></li>
+                <li><a href="{% url 'embalagem' %}"><i class="fa-solid fa-cube"></i>> Embalagem</a></li>
                 <li><a href="{% url 'encerrar' %}"><i class="fas fa-sign-out-alt"></i>Saida</a></li>
                 <li><a href="{% url 'consulta_total' %}"><i class="fas fa-search"></i> Consulta Total</a></li>
                 <li><a href="{% url 'consulta_serie' %}"><i class="fas fa-search"></i> Consulta por S/N</a></li>
-                <li><a href="{% url 'cad_sku_sufixo' %}"><i class="fas fa-box"></i> Cadastro de SKU</a></li>
+                <li><a href="{% url 'cad_sku_sufixo' %}"><i class="fa-solid fa-tv"></i> Cadastro de SKU</a></li>
                 <li><a href="{% url 'verificar_sku' %}"><i class="fas fa-tools"></i> Cadastro de Peças</a></li>
                 <li><a href="{% url 'cad_funcionario' %}"><i class="fas fa-user-plus"></i> Cadastro de Funcionário</a></li>
                 <li><a href="{% url 'consulta_pedido' %}"><i class="fas fa-clipboard-check"></i> Pedidos</a></li>
+                <li><a href="{% url 'gerar_relatorio' %}"><i class="fa-solid fa-list"></i> Gerar Relatório</a></li>
                 <li><a href="{% url 'sair' %}"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
             </ul>
         </nav>

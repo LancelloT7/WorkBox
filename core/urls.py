@@ -31,5 +31,6 @@ urlpatterns = [
     path('conserto/', include('conserto.urls')),
     path('embalagem/', include('embalagem.urls')),
     path('saida/', include('saida.urls')),
+    path('relatorio/', include('relatorio.urls')),
     path('', views.logar),
     ]

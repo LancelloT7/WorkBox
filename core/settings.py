@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'embalagem',
     'saida',
     'apps',
+    'relatorio',
     
 ]
 
