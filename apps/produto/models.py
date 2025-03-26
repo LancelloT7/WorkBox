@@ -32,7 +32,7 @@ class Produto(models.Model):
         
     ]
 
-    
+    impresso = models.BooleanField(default=False)
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='ENTRADA')
     data_saida = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     registro_saida = models.CharField(max_length=100, blank=True)
